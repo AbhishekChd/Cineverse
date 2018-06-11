@@ -1,7 +1,9 @@
-package com.example.abhishek.cineverse;
+package com.example.abhishek.cineverse.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.abhishek.cineverse.R;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
