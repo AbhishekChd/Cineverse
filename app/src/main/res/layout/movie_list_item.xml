@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movie_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/margin_movie_card"
+    android:layout_marginEnd="@dimen/margin_movie_card"
+    android:layout_marginStart="@dimen/margin_movie_card"
+    android:layout_marginTop="@dimen/margin_movie_card"
+    app:cardCornerRadius="@dimen/cardview_default_radius">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/iv_movie_poster"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/poster_height"
+            android:scaleType="centerCrop"
+            android:src="@drawable/poster_w185_thor" />
+
+        <TextView
+            android:id="@+id/tv_movie_title"
+            style="@style/MoviePosterTextView"
+            android:layout_marginTop="@dimen/card_internal_padding"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/movie_card_title"
+            tools:text="@string/sample_movie_title" />
+
+        <TextView
+            android:id="@+id/tv_movie_genre"
+            style="@style/MoviePosterTextView"
+            tools:text="@string/sample_genre" />
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
