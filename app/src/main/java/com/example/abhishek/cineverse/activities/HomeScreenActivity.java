@@ -9,16 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.abhishek.cineverse.R;
 import com.example.abhishek.cineverse.adapters.MovieAdapter;
+import com.example.abhishek.cineverse.fragments.SortDialogFragment;
 import com.example.abhishek.cineverse.models.MovieViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class HomeScreenActivity extends AppCompatActivity implements SortDialogFragment.SortDialogListener {
 
     @BindView(R.id.rv_movies_list)
     RecyclerView rvMoviesList;
@@ -26,8 +27,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-
-
+    private MovieViewModel movieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +41,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         int orientation = getResources().getConfiguration().orientation;
         GridLayoutManager layoutManager =
                 new GridLayoutManager(this, orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 3);
-        MovieAdapter adapter = new MovieAdapter(this,null);
+        MovieAdapter adapter = new MovieAdapter(this, null);
         rvMoviesList.setAdapter(adapter);
         rvMoviesList.setLayoutManager(layoutManager);
 
-        MovieViewModel movieViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MovieViewModel.class);
+        movieViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MovieViewModel.class);
 
         movieViewModel.getMoviesLiveData(this).observe(this, movies -> {
             Log.v("Debug App", "Fetched Data: " + movies.toString());
@@ -57,6 +57,25 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_filter:
+                SortDialogFragment sortDialog = new SortDialogFragment();
+                // TODO: 13/6/18 Change TAG and add more properties if link{needed https://developer.android.com/guide/topics/ui/dialogs}
+                sortDialog.show(getSupportFragmentManager(), "TAG");
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onDialogItemClick(int which) {
+        String[] options = getResources().getStringArray(R.array.filter_sort);
+        movieViewModel.sortMoviesBy(this, options[which]);
     }
 }

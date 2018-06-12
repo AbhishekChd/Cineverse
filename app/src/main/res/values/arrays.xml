@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filter_sort">
+        <item>@string/sort_by_popularity</item>
+        <item>@string/sort_by_rating</item>
+    </string-array>
+</resources>

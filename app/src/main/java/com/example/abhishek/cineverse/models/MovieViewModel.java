@@ -6,9 +6,8 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.net.Uri;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.example.abhishek.cineverse.BuildConfig;
+import com.example.abhishek.cineverse.R;
 import com.example.abhishek.cineverse.data.UrlContract;
 import com.example.abhishek.cineverse.network.GsonRequest;
 import com.example.abhishek.cineverse.network.NetworkRequestQueue;
@@ -32,16 +31,20 @@ public class MovieViewModel extends ViewModel {
     public LiveData<List<Movie>> getMoviesLiveData(Context context) {
         if (mMutableMovieList == null) {
             mMutableMovieList = new MutableLiveData<>();
-            getMovies(context);
+            getMovies(context, context.getString(R.string.sort_by_popularity));
         }
 
         return mMutableMovieList;
     }
 
-    private void getMovies(Context context){
+    private void getMovies(Context context, String sort) {
         String url = Uri.parse(UrlContract.BASE_URL_MOVIE).buildUpon()
-                .appendPath(UrlContract.ENDPOINT_MOVIE_POPULAR)
-                .appendQueryParameter("langauge", "en")
+                .appendPath(
+                        sort.equalsIgnoreCase(context.getString(R.string.sort_by_popularity)) ?
+                                UrlContract.ENDPOINT_MOVIE_POPULAR
+                                : UrlContract.ENDPOINT_MOVIE_TOP_RATED
+                )
+                .appendQueryParameter("language", "en")
                 .appendQueryParameter("page", "1")
                 .appendQueryParameter("api_key", BuildConfig.ApiKey)
                 .toString();
@@ -58,5 +61,11 @@ public class MovieViewModel extends ViewModel {
         NetworkRequestQueue.getInstance(context).addToRequestQueue(movieGsonRequest);
     }
 
-
+    public void sortMoviesBy(Context context, String sort) {
+        if (sort.equalsIgnoreCase(context.getString(R.string.sort_by_popularity)) ||
+                sort.equalsIgnoreCase(context.getString(R.string.sort_by_rating)))
+            getMovies(context, sort);
+        else
+            getMovies(context, context.getString(R.string.sort_by_popularity));
+    }
 }
