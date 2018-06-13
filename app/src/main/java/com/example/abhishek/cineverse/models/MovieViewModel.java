@@ -68,4 +68,5 @@ public class MovieViewModel extends ViewModel {
         else
             getMovies(context, context.getString(R.string.sort_by_popularity));
     }
+
 }

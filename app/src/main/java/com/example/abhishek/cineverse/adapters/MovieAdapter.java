@@ -19,11 +19,12 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     public List<Movie> movies;
+    MovieAdapterOnClickHandler mClickHandler;
     private Context Ctx;
 
-    public MovieAdapter(Context context, List<Movie> movies) {
+    public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler) {
         Ctx = context;
-        this.movies = movies;
+        mClickHandler = clickHandler;
     }
 
     @NonNull
@@ -37,11 +38,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         holder.tvMovieTitle.setText(movies.get(position).getTitle());
-        holder.tvMovieGenre.setText(holder.genre);
+        holder.tvRating.setText(Ctx.getString(R.string.rating_format, movies.get(position).getVotes()));
 
         Picasso.with(Ctx)
                 .load(UrlContract.BASE_POSTER_LARGE_URL + movies.get(position).getPosterPath())
                 .into(holder.ivMoviePoster);
+        holder.bind(movies.get(position), mClickHandler);
     }
 
     @Override
@@ -49,28 +51,42 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movies == null ? 0 : movies.size();
     }
 
+    public void setMovieData(List<Movie> movieData) {
+        movies = movieData;
+        notifyDataSetChanged();
+    }
+
+    public interface MovieAdapterOnClickHandler {
+        void onClick(Movie movie);
+    }
+
     class MovieViewHolder extends RecyclerView.ViewHolder {
 
-        //        @BindView(R.id.iv_movie_poster)
         ImageView ivMoviePoster;
-        //        @BindView(R.id.tv_movie_title)
         TextView tvMovieTitle;
-        //        @BindView(R.id.tv_movie_genre)
-        TextView tvMovieGenre;
-
-        //        @BindString(R.string.sample_genre)
+        TextView tvRating;
         String genre;
 
         int image;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-//            ButterKnife.bind(itemView);
             ivMoviePoster = itemView.findViewById(R.id.iv_movie_poster);
             tvMovieTitle = itemView.findViewById(R.id.tv_movie_title);
-            tvMovieGenre = itemView.findViewById(R.id.tv_movie_genre);
+            tvRating = itemView.findViewById(R.id.tv_movie_rating);
             genre = itemView.getContext().getString(R.string.sample_genre);
             image = R.drawable.poster_w185_thor;
         }
+
+        public void bind(final Movie item, final MovieAdapterOnClickHandler listener) {
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(item);
+                }
+            });
+        }
+
     }
 }

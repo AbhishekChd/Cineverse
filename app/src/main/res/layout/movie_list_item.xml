@@ -24,20 +24,38 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/poster_height"
             android:scaleType="centerCrop"
-            android:src="@drawable/poster_w185_thor" />
+            android:src="@drawable/poster_w185_thor"
+            android:transitionName="@string/poster_image_transition" />
 
         <TextView
             android:id="@+id/tv_movie_title"
             style="@style/MoviePosterTextView"
             android:layout_marginTop="@dimen/card_internal_padding"
+
+            android:fontFamily="sans-serif"
             android:textColor="@android:color/black"
             android:textSize="@dimen/movie_card_title"
             tools:text="@string/sample_movie_title" />
 
-        <TextView
-            android:id="@+id/tv_movie_genre"
-            style="@style/MoviePosterTextView"
-            tools:text="@string/sample_genre" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MoviePosterTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rating_label"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_movie_rating"
+                style="@style/MoviePosterTextView"
+                android:textColor="@android:color/holo_red_light"
+                tools:text="@string/sample_rating" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
