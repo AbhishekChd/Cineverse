@@ -17,7 +17,7 @@
     <string name="rating_label">Ratings</string>
     <string name="backdrop_image_desc">backdrop image for movie</string>
     <string name="poster_image_desc">poster image for movie</string>
-    <string name="overview_label">Synopsis</string>
+    <string name="overview_label">Story Line</string>
     <string name="release_date_label">Release Date </string>
 
 </resources>

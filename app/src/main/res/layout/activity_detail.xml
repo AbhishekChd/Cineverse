@@ -105,7 +105,6 @@
             android:id="@+id/rating_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/details_view_margin"
             android:layout_marginTop="@dimen/details_view_margin"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/rating_label"
@@ -165,6 +164,7 @@
             android:layout_marginStart="@dimen/details_view_margin"
             android:layout_marginTop="@dimen/horizontal_separation_margin"
             android:text="@string/overview_label"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_movie_poster" />
