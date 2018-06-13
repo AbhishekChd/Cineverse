@@ -15,17 +15,17 @@ import java.util.Objects;
 public class SortDialogFragment extends DialogFragment {
 
     SortDialogListener mListener;
+    private int position = 0;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         builder.setTitle(R.string.sort_by)
-                .setItems(R.array.filter_sort, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(R.array.filter_sort, position, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        String[] options = getResources().getStringArray(R.array.filter_sort);
+                        position = which;
                         mListener.onDialogItemClick(which);
                     }
                 });

@@ -35,6 +35,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     Toolbar toolbar;
 
     private MovieViewModel movieViewModel;
+    private SortDialogFragment sortDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,8 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        Typeface font = Typeface.createFromAsset(getAssets(),"pacifico_regular.ttf" );
-        ((TextView)toolbar.getChildAt(0)).setTypeface(font);
+        Typeface font = Typeface.createFromAsset(getAssets(), "pacifico_regular.ttf");
+        ((TextView) toolbar.getChildAt(0)).setTypeface(font);
 
         int orientation = getResources().getConfiguration().orientation;
         GridLayoutManager layoutManager =
@@ -60,6 +61,8 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
             Log.v("Debug App", "Fetched Data: " + movies.toString());
             adapter.setMovieData(movies);
         });
+
+        sortDialog = new SortDialogFragment();
     }
 
     @Override
@@ -72,7 +75,6 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_filter:
-                SortDialogFragment sortDialog = new SortDialogFragment();
                 // TODO: 13/6/18 Change TAG and add more properties if link{needed https://developer.android.com/guide/topics/ui/dialogs}
                 sortDialog.show(getSupportFragmentManager(), "TAG");
                 return true;
@@ -82,6 +84,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
     @Override
     public void onDialogItemClick(int which) {
+        sortDialog.dismiss();
         String[] options = getResources().getStringArray(R.array.filter_sort);
         movieViewModel.sortMoviesBy(this, options[which]);
     }
