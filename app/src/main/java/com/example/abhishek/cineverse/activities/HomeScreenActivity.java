@@ -1,26 +1,34 @@
 package com.example.abhishek.cineverse.activities;
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
+import android.support.transition.ChangeBounds;
+import android.support.transition.ChangeTransform;
+import android.support.transition.TransitionSet;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.support.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.abhishek.cineverse.R;
 import com.example.abhishek.cineverse.adapters.MovieAdapter;
+import com.example.abhishek.cineverse.fragments.DetailFragment;
 import com.example.abhishek.cineverse.fragments.SortDialogFragment;
-import com.example.abhishek.cineverse.models.Movie;
 import com.example.abhishek.cineverse.models.MovieViewModel;
 
 import butterknife.BindView;
@@ -28,11 +36,19 @@ import butterknife.ButterKnife;
 
 public class HomeScreenActivity extends AppCompatActivity implements SortDialogFragment.SortDialogListener, MovieAdapter.MovieAdapterOnClickHandler {
 
+    private static final long MOVE_DEFAULT_TIME = 1000;
+    private static final long FADE_DEFAULT_TIME = 300;
     @BindView(R.id.rv_movies_list)
     RecyclerView rvMoviesList;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.fragment_container)
+    FrameLayout fragmentContainer;
+
+    @BindView(R.id.app_bar)
+    AppBarLayout app_bar;
 
     private MovieViewModel movieViewModel;
     private SortDialogFragment sortDialog;
@@ -78,6 +94,9 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
                 // TODO: 13/6/18 Change TAG and add more properties if link{needed https://developer.android.com/guide/topics/ui/dialogs}
                 sortDialog.show(getSupportFragmentManager(), "TAG");
                 return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -89,16 +108,35 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         movieViewModel.sortMoviesBy(this, options[which]);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onClick(Movie movie) {
-        Intent detailsIntent = new Intent(this, DetailActivity.class);
-        detailsIntent.putExtra("movie", movie);
-
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                this,
-                new Pair<>(findViewById(R.id.iv_movie_poster), getString(R.string.poster_image_transition))
+    public void onClick(int index, ImageView v) {
+        DetailFragment fragment = DetailFragment.newInstance(
+                movieViewModel
+                        .getMoviesLiveData(this)
+                        .getValue()
+                        .get(index)
         );
 
-        ActivityCompat.startActivity(this, detailsIntent, options.toBundle());
+        FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
+
+        TransitionSet set = new TransitionSet();
+        set.addTransition(new ChangeTransform());
+        set.addTransition(new ChangeBounds());
+        set.setDuration(1000*MOVE_DEFAULT_TIME);
+        fragment.setSharedElementEnterTransition(set);
+//
+//
+//        // 3. Enter Transition for New Fragment
+//        Fade enterFade = new Fade();
+//        enterFade.setStartDelay(MOVE_DEFAULT_TIME);
+//        enterFade.setDuration(FADE_DEFAULT_TIME);
+//        fragment.setEnterTransition(enterFade);
+
+
+        fragmentManager.addToBackStack("TAG");
+        fragmentManager.replace(R.id.fragment_container, fragment, "TAG");
+        fragmentManager.addSharedElement(v, movieViewModel.getMoviesLiveData(this).getValue().get(index).getTitle());
+        fragmentManager.commitAllowingStateLoss();
     }
 }

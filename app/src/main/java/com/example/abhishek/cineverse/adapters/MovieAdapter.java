@@ -2,6 +2,7 @@ package com.example.abhishek.cineverse.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,8 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    public List<Movie> movies;
-    MovieAdapterOnClickHandler mClickHandler;
+    private List<Movie> movies;
+    private MovieAdapterOnClickHandler mClickHandler;
     private Context Ctx;
 
     public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler) {
@@ -43,7 +44,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Picasso.with(Ctx)
                 .load(UrlContract.BASE_POSTER_LARGE_URL + movies.get(position).getPosterPath())
                 .into(holder.ivMoviePoster);
-        holder.bind(movies.get(position), mClickHandler);
+
+        ViewCompat.setTransitionName(holder.ivMoviePoster, movies.get(position).getTitle());
+
     }
 
     @Override
@@ -57,10 +60,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public interface MovieAdapterOnClickHandler {
-        void onClick(Movie movie);
+        void onClick(int index, ImageView v);
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class MovieViewHolder extends RecyclerView.ViewHolder   implements View.OnClickListener{
 
         ImageView ivMoviePoster;
         TextView tvMovieTitle;
@@ -76,17 +79,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             tvRating = itemView.findViewById(R.id.tv_movie_rating);
             genre = itemView.getContext().getString(R.string.sample_genre);
             image = R.drawable.poster_w185_thor;
+            ivMoviePoster.setOnClickListener(this);
         }
 
-        public void bind(final Movie item, final MovieAdapterOnClickHandler listener) {
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(item);
-                }
-            });
+        @Override
+        public void onClick(View v) {
+            mClickHandler.onClick(getAdapterPosition(),ivMoviePoster);
         }
-
     }
 }

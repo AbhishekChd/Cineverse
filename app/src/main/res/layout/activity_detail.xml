@@ -9,6 +9,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
         tools:context=".activities.DetailActivity">
 
@@ -53,7 +54,6 @@
             android:contentDescription="@string/poster_image_desc"
             android:scaleType="centerCrop"
             android:src="@drawable/poster_w185_thor"
-            android:transitionName="@string/poster_image_transition"
             app:layout_constraintBottom_toBottomOf="@id/horizontal_divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/horizontal_divider"
@@ -192,9 +192,10 @@
             tools:text="TextView" />
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:navigationIcon="?attr/homeAsUpIndicator"
             android:fitsSystemWindows="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

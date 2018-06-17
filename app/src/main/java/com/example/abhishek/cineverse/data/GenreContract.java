@@ -4,9 +4,9 @@ import android.util.SparseArray;
 
 public final class GenreContract {
 
-    private SparseArray<String> genres = new SparseArray<>();
+    private static SparseArray<String> genres = new SparseArray<>();
 
-    private void addGenres() {
+    private static void addGenres() {
         genres.append(28, "Action");
         genres.append(12, "Adventure");
         genres.append(16, "Animation");
@@ -28,7 +28,7 @@ public final class GenreContract {
         genres.append(37, "Western");
     }
 
-    public String getGenre(int id) {
+    public static String getGenre(int id) {
         if (genres.size() <= 0)
             addGenres();
         return genres.get(id, "");

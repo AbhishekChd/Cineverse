@@ -24,8 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/poster_height"
             android:scaleType="centerCrop"
-            android:src="@drawable/poster_w185_thor"
-            android:transitionName="@string/poster_image_transition" />
+            android:src="@drawable/poster_w185_thor" />
 
         <TextView
             android:id="@+id/tv_movie_title"
