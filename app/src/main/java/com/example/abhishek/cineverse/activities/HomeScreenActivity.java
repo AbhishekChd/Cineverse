@@ -7,22 +7,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
-import android.support.transition.ChangeBounds;
-import android.support.transition.ChangeTransform;
-import android.support.transition.TransitionSet;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
-import android.support.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.abhishek.cineverse.R;
@@ -36,8 +30,7 @@ import butterknife.ButterKnife;
 
 public class HomeScreenActivity extends AppCompatActivity implements SortDialogFragment.SortDialogListener, MovieAdapter.MovieAdapterOnClickHandler {
 
-    private static final long MOVE_DEFAULT_TIME = 1000;
-    private static final long FADE_DEFAULT_TIME = 300;
+    private static final String sortDialogFragmentTag = "sort-dialog";
     @BindView(R.id.rv_movies_list)
     RecyclerView rvMoviesList;
 
@@ -60,10 +53,12 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
         ButterKnife.bind(this);
 
+        // Setup toolbar
         setSupportActionBar(toolbar);
-        Typeface font = Typeface.createFromAsset(getAssets(), "pacifico_regular.ttf");
+        Typeface font = ResourcesCompat.getFont(this, R.font.pacifico_regular);
         ((TextView) toolbar.getChildAt(0)).setTypeface(font);
 
+        // Set grid layout and Adapter
         int orientation = getResources().getConfiguration().orientation;
         GridLayoutManager layoutManager =
                 new GridLayoutManager(this, orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 4);
@@ -71,12 +66,13 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         rvMoviesList.setAdapter(adapter);
         rvMoviesList.setLayoutManager(layoutManager);
 
+        // Setup ViewModel and LiveData
         movieViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MovieViewModel.class);
-
         movieViewModel.getMoviesLiveData(this).observe(this, movies -> {
             Log.v("Debug App", "Fetched Data: " + movies.toString());
             adapter.setMovieData(movies);
         });
+
 
         sortDialog = new SortDialogFragment();
     }
@@ -91,8 +87,8 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_filter:
-                // TODO: 13/6/18 Change TAG and add more properties if link{needed https://developer.android.com/guide/topics/ui/dialogs}
-                sortDialog.show(getSupportFragmentManager(), "TAG");
+                // Start sort dialog
+                sortDialog.show(getSupportFragmentManager(), sortDialogFragmentTag);
                 return true;
             case android.R.id.home:
                 onBackPressed();
@@ -110,7 +106,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onClick(int index, ImageView v) {
+    public void onClick(int index) {
         DetailFragment fragment = DetailFragment.newInstance(
                 movieViewModel
                         .getMoviesLiveData(this)
@@ -120,23 +116,9 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
         FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
 
-        TransitionSet set = new TransitionSet();
-        set.addTransition(new ChangeTransform());
-        set.addTransition(new ChangeBounds());
-        set.setDuration(1000*MOVE_DEFAULT_TIME);
-        fragment.setSharedElementEnterTransition(set);
-//
-//
-//        // 3. Enter Transition for New Fragment
-//        Fade enterFade = new Fade();
-//        enterFade.setStartDelay(MOVE_DEFAULT_TIME);
-//        enterFade.setDuration(FADE_DEFAULT_TIME);
-//        fragment.setEnterTransition(enterFade);
-
-
         fragmentManager.addToBackStack("TAG");
         fragmentManager.replace(R.id.fragment_container, fragment, "TAG");
-        fragmentManager.addSharedElement(v, movieViewModel.getMoviesLiveData(this).getValue().get(index).getTitle());
-        fragmentManager.commitAllowingStateLoss();
+//        fragmentManager.addSharedElement(v, movieViewModel.getMoviesLiveData(this).getValue().get(index).getTitle());
+        fragmentManager.commit();
     }
 }

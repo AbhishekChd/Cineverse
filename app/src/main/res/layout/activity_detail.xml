@@ -4,18 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backdrop_blur_end"
-    tools:context=".activities.DetailActivity">
+    android:background="@color/backdrop_blur_end">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        tools:context=".activities.DetailActivity">
+        android:layout_height="wrap_content">
 
         <View
             android:id="@+id/vertical_divider"
-            android:layout_width="1dp"
+            android:layout_width="@dimen/divider_width"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +22,7 @@
         <View
             android:id="@+id/horizontal_divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/divider_width"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +66,6 @@
             android:layout_marginTop="@dimen/horizontal_separation_margin"
             android:ellipsize="marquee"
             android:singleLine="true"
-
             android:text="@string/sample_movie_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_constraintBottom_toBottomOf="@id/horizontal_divider"
@@ -77,29 +73,36 @@
             app:layout_constraintStart_toEndOf="@id/iv_movie_poster"
             app:layout_constraintTop_toTopOf="@id/horizontal_divider" />
 
-        <TextView
-            android:id="@+id/release_date_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="@string/release_date_label"
-            app:layout_constraintBottom_toBottomOf="@id/rating_label"
-            app:layout_constraintEnd_toEndOf="@id/tv_release_date"
-            app:layout_constraintStart_toStartOf="@id/tv_release_date"
-            app:layout_constraintTop_toTopOf="@id/rating_label" />
+
+        <ProgressBar
+            android:id="@+id/pb_rating"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="@dimen/ratings_progress_size"
+            android:layout_height="@dimen/ratings_progress_size"
+            android:layout_marginTop="@dimen/vertical_separation_margin"
+            android:indeterminate="false"
+            android:max="100"
+            android:progressDrawable="@drawable/rating_circle"
+            android:rotation="270"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:layout_constraintVertical_bias="0.25"
+            tools:progress="86" />
 
         <TextView
-            android:id="@+id/tv_release_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/horizontal_separation_margin"
+            android:id="@+id/tv_rating"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/sample_rating"
+            android:textAlignment="center"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/movie_card_title"
+            android:textSize="@dimen/rating_tv_text_size"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/pb_rating"
-            app:layout_constraintStart_toEndOf="@id/pb_rating"
-            app:layout_constraintTop_toTopOf="@id/pb_rating"
-            tools:text="@string/sample_release_date" />
+            app:layout_constraintBottom_toBottomOf="@+id/pb_rating"
+            app:layout_constraintEnd_toEndOf="@+id/pb_rating"
+            app:layout_constraintStart_toStartOf="@+id/pb_rating"
+            app:layout_constraintTop_toTopOf="@+id/pb_rating" />
 
         <TextView
             android:id="@+id/rating_label"
@@ -108,97 +111,57 @@
             android:layout_marginTop="@dimen/details_view_margin"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/rating_label"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/pb_rating"
             app:layout_constraintStart_toStartOf="@id/pb_rating"
             app:layout_constraintTop_toBottomOf="@id/pb_rating" />
 
-        <ProgressBar
-            android:id="@+id/pb_rating"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_marginTop="@dimen/details_view_margin"
-            android:indeterminate="false"
-            android:max="100"
-            android:progressDrawable="@drawable/rating_circle"
-            android:rotation="270"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
-            tools:progress="86" />
 
         <TextView
-            android:id="@+id/tv_rating"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:text="5.6"
-            android:textAlignment="center"
+            android:id="@+id/tv_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="@dimen/rating_tv_text_size"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/pb_rating"
-            app:layout_constraintEnd_toEndOf="@+id/pb_rating"
-            app:layout_constraintStart_toStartOf="@+id/pb_rating"
-            app:layout_constraintTop_toTopOf="@+id/pb_rating" />
-
-        <!--TODO: Add Genre-->
-        <!--<TextView-->
-            <!--android:id="@+id/tv_movie_genre"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_marginEnd="@dimen/details_view_margin"-->
-            <!--android:layout_marginTop="@dimen/details_view_margin"-->
-            <!--app:layout_constraintBottom_toBottomOf="@id/iv_movie_poster"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--style="@style/TextAppearance.AppCompat.Button"-->
-            <!--app:layout_constraintStart_toStartOf="@id/rating_label"-->
-            <!--app:layout_constraintTop_toBottomOf="@id/rating_label"-->
-            <!--tools:text="TextView" />-->
+            app:layout_constraintBottom_toBottomOf="@id/pb_rating"
+            app:layout_constraintStart_toEndOf="@id/pb_rating"
+            app:layout_constraintTop_toTopOf="@id/pb_rating"
+            tools:text="@string/sample_release_date" />
 
         <TextView
-            android:id="@+id/overview_label"
-            style="@style/TextAppearance.AppCompat.Subhead"
+            android:id="@+id/release_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="@string/release_date_label"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/rating_label"
+            app:layout_constraintEnd_toEndOf="@id/tv_release_date"
+            app:layout_constraintStart_toStartOf="@id/tv_release_date"
+            app:layout_constraintTop_toTopOf="@id/rating_label" />
+
+        <include
+            layout="@layout/movie_overview_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/details_view_margin"
-            android:layout_marginStart="@dimen/details_view_margin"
-            android:layout_marginTop="@dimen/horizontal_separation_margin"
-            android:text="@string/overview_label"
-            android:textStyle="bold"
+            android:layout_margin="@dimen/vertical_separation_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_movie_poster" />
 
-        <View
-            android:id="@+id/overview_divider"
-            android:layout_width="0dp"
-            android:layout_height="0.6dp"
-            android:layout_marginTop="@dimen/details_view_margin"
-            android:background="#cccccc"
-            app:layout_constraintEnd_toEndOf="@id/overview_label"
-            app:layout_constraintStart_toStartOf="@id/overview_label"
-            app:layout_constraintTop_toBottomOf="@id/overview_label" />
-
-        <TextView
-            android:id="@+id/tv_overview"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/details_view_margin"
-            android:textAlignment="gravity"
-            app:layout_constraintEnd_toEndOf="@id/overview_label"
-            app:layout_constraintStart_toStartOf="@id/overview_label"
-            app:layout_constraintTop_toBottomOf="@id/overview_divider"
-            tools:text="TextView" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:navigationIcon="?attr/homeAsUpIndicator"
             android:fitsSystemWindows="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="?attr/homeAsUpIndicator" />
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

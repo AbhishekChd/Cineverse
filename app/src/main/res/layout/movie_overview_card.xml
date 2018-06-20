@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/iv_movie_poster"
+    tools:layout_margin="@dimen/vertical_separation_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/detail_card_gradient"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/vertical_separation_margin"
+        android:paddingEnd="@dimen/details_view_margin"
+        android:paddingStart="@dimen/details_view_margin"
+        android:paddingTop="@dimen/vertical_separation_margin">
+
+        <TextView
+            android:id="@+id/overview_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/overview_label"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/movie_overview_headline"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="@dimen/movie_overview_divider_width"
+            android:layout_height="@dimen/movie_overview_divider_height"
+            android:layout_marginTop="@dimen/card_internal_padding"
+            android:background="@drawable/divider_gradient" />
+
+        <TextView
+            android:id="@+id/tv_overview"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_view_margin"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/movie_card_title"
+            tools:text="@string/sample_overview" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

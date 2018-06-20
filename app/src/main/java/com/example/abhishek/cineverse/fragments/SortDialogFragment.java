@@ -2,7 +2,6 @@ package com.example.abhishek.cineverse.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -14,7 +13,7 @@ import java.util.Objects;
 
 public class SortDialogFragment extends DialogFragment {
 
-    SortDialogListener mListener;
+    private SortDialogListener mListener;
     private int position = 0;
 
     @NonNull
@@ -22,12 +21,9 @@ public class SortDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         builder.setTitle(R.string.sort_by)
-                .setSingleChoiceItems(R.array.filter_sort, position, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        position = which;
-                        mListener.onDialogItemClick(which);
-                    }
+                .setSingleChoiceItems(R.array.filter_sort, position, (dialog, which) -> {
+                    position = which;
+                    mListener.onDialogItemClick(which);
                 });
         return builder.create();
     }
@@ -43,6 +39,6 @@ public class SortDialogFragment extends DialogFragment {
     }
 
     public interface SortDialogListener {
-        public void onDialogItemClick(int which);
+        void onDialogItemClick(int which);
     }
 }

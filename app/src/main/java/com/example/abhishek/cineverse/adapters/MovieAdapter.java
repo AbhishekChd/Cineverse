@@ -2,7 +2,6 @@ package com.example.abhishek.cineverse.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.abhishek.cineverse.R;
-import com.example.abhishek.cineverse.data.UrlContract;
+import com.example.abhishek.cineverse.helpers.ImageUrlUtils;
 import com.example.abhishek.cineverse.models.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -42,11 +41,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         holder.tvRating.setText(Ctx.getString(R.string.rating_format, movies.get(position).getVotes()));
 
         Picasso.with(Ctx)
-                .load(UrlContract.BASE_POSTER_LARGE_URL + movies.get(position).getPosterPath())
+                .load(ImageUrlUtils.getLargePosterUrl(
+                        movies.get(position).getPosterPath()
+                ))
                 .into(holder.ivMoviePoster);
-
-        ViewCompat.setTransitionName(holder.ivMoviePoster, movies.get(position).getTitle());
-
     }
 
     @Override
@@ -60,31 +58,26 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public interface MovieAdapterOnClickHandler {
-        void onClick(int index, ImageView v);
+        void onClick(int index);
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder   implements View.OnClickListener{
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView ivMoviePoster;
         TextView tvMovieTitle;
         TextView tvRating;
-        String genre;
-
-        int image;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
             ivMoviePoster = itemView.findViewById(R.id.iv_movie_poster);
             tvMovieTitle = itemView.findViewById(R.id.tv_movie_title);
             tvRating = itemView.findViewById(R.id.tv_movie_rating);
-            genre = itemView.getContext().getString(R.string.sample_genre);
-            image = R.drawable.poster_w185_thor;
             ivMoviePoster.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            mClickHandler.onClick(getAdapterPosition(),ivMoviePoster);
+            mClickHandler.onClick(getAdapterPosition());
         }
     }
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.abhishek.cineverse.BuildConfig;
 import com.example.abhishek.cineverse.R;
@@ -54,9 +55,7 @@ public class MovieViewModel extends ViewModel {
                 MovieJsonContainer.class,
                 null,
                 response -> mMutableMovieList.setValue(response.movies),
-                error -> {
-                    // TODO: 12/6/18 Handle error
-                }
+                error -> Log.e(getClass().getSimpleName(), "Error parsing JSON: " + error.getMessage())
         );
         NetworkRequestQueue.getInstance(context).addToRequestQueue(movieGsonRequest);
     }

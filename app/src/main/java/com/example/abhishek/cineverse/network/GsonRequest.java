@@ -31,8 +31,6 @@ public class GsonRequest<T> extends Request<T> {
         mTargetClass = targetClass;
         this.headers = headers;
         mListener = listener;
-
-        // TODO: 12/6/18 Remove pretty printing
         mGson = new GsonBuilder().create();
     }
 

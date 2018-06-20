@@ -6,5 +6,4 @@
         android:angle="270"
         android:endColor="@color/backdrop_blur_end"
         android:startColor="@color/backdrop_blur_start" />
-
 </shape>

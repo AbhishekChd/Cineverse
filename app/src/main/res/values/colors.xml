@@ -2,10 +2,20 @@
 <resources>
     <color name="colorPrimary">#009FFF</color>
     <color name="colorPrimaryDark">#0071cb</color>
-    <color name="colorAccent">#37474f</color>
+    <color name="colorAccent">#ff6200</color>
+
+    <color name="colorText">#37474f</color>
+    <color name="colorTextDark">#102027</color>
+    <color name="colorTextLight">#62727b</color>
+
+    <color name="colorTextBlack">#000000</color>
 
     <!-- Color for drawable resources-->
     <color name="backdrop_blur_start">#00ffffff</color>
     <color name="backdrop_blur_end">#ffffffff</color>
 
+    <!-- Colors for details card gradient source:uiGradients style:Azur Lane-->
+    <color name="card_start_color">#7F7FD5</color>
+    <color name="card_center_color">#86A8E7</color>
+    <color name="card_end_color">#91EAE4</color>
 </resources>
