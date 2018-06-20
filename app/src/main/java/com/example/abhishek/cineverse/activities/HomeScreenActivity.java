@@ -1,12 +1,15 @@
 package com.example.abhishek.cineverse.activities;
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.abhishek.cineverse.R;
@@ -37,14 +39,12 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.fragment_container)
-    FrameLayout fragmentContainer;
-
     @BindView(R.id.app_bar)
     AppBarLayout app_bar;
 
     private MovieViewModel movieViewModel;
     private SortDialogFragment sortDialog;
+    private Snackbar noInternetSnack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,34 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         Typeface font = ResourcesCompat.getFont(this, R.font.pacifico_regular);
         ((TextView) toolbar.getChildAt(0)).setTypeface(font);
 
+        sortDialog = new SortDialogFragment();
+
+        showDataOrError();
+    }
+
+    private void showDataOrError() {
+        if (!isConnected()) {
+            noInternetSnack =
+                    Snackbar.make(findViewById(R.id.coordinator), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", view -> {
+                                showDataOrError();
+                            })
+                            .setActionTextColor(getResources().getColor(R.color.colorAccent));
+            noInternetSnack.show();
+        } else {
+            noInternetSnack = null;
+            loadAndDisplayMovies();
+        }
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo() != null
+                && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
+    private void loadAndDisplayMovies() {
         // Set grid layout and Adapter
         int orientation = getResources().getConfiguration().orientation;
         GridLayoutManager layoutManager =
@@ -72,9 +100,6 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
             Log.v("Debug App", "Fetched Data: " + movies.toString());
             adapter.setMovieData(movies);
         });
-
-
-        sortDialog = new SortDialogFragment();
     }
 
     @Override

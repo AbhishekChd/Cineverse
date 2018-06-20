@@ -5,7 +5,9 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.example.abhishek.cineverse.BuildConfig;
 import com.example.abhishek.cineverse.R;
