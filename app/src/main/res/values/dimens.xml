@@ -26,5 +26,4 @@
 
     <!--Splash screen-->
     <dimen name="splash_logo_text_size">68sp</dimen>
-    <dimen name="splash_attribution_image_size">120dp</dimen>
 </resources>

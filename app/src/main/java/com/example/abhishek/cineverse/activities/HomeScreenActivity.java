@@ -44,7 +44,6 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
     private MovieViewModel movieViewModel;
     private SortDialogFragment sortDialog;
-    private Snackbar noInternetSnack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +63,11 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     }
 
     private void showDataOrError() {
+        Snackbar noInternetSnack;
         if (!isConnected()) {
             noInternetSnack =
                     Snackbar.make(findViewById(R.id.coordinator), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Retry", view -> {
-                                showDataOrError();
-                            })
+                            .setAction("Retry", view -> showDataOrError())
                             .setActionTextColor(getResources().getColor(R.color.colorAccent));
             noInternetSnack.show();
         } else {

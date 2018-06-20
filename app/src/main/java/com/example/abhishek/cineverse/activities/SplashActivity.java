@@ -15,13 +15,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashActivity.this, HomeScreenActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        handler.postDelayed(() -> {
+            Intent intent = new Intent(SplashActivity.this, HomeScreenActivity.class);
+            startActivity(intent);
+            finish();
         }, 3000);
     }
 }

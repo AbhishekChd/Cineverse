@@ -20,4 +20,5 @@
     <string name="overview_label">Story Line</string>
     <string name="release_date_label">Release Date </string>
     <string name="action_sort">Sort</string>
+    <string name="content_attribution">content attribution</string>
 </resources>
