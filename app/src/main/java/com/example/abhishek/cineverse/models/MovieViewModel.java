@@ -29,10 +29,9 @@ public class MovieViewModel extends ViewModel {
                 '}';
     }
 
-    public LiveData<List<Movie>> getMoviesLiveData(Context context) {
+    public LiveData<List<Movie>> getMoviesLiveData() {
         if (mMutableMovieList == null) {
             mMutableMovieList = new MutableLiveData<>();
-            getMovies(context, context.getString(R.string.sort_by_popularity));
         }
 
         return mMutableMovieList;
@@ -60,8 +59,15 @@ public class MovieViewModel extends ViewModel {
         NetworkRequestQueue.getInstance(context).addToRequestQueue(movieGsonRequest);
     }
 
+    /**
+     * Sort movies based on selection
+     *
+     * @param sort Sort criteria and Defaults when passed null
+     */
     public void sortMoviesBy(Context context, String sort) {
-        if (sort.equalsIgnoreCase(context.getString(R.string.sort_by_popularity)) ||
+        if (sort == null)
+            getMovies(context, context.getString(R.string.sort_by_popularity));
+        else if (sort.equalsIgnoreCase(context.getString(R.string.sort_by_popularity)) ||
                 sort.equalsIgnoreCase(context.getString(R.string.sort_by_rating)))
             getMovies(context, sort);
         else
