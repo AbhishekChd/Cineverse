@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Cineverse</string>
+    <string name="sample_movie_title">Thor: Ragnarok</string>
+    <string name="sample_rating">5.9</string>
+    <string name="sample_release_date">2018–06–06</string>
+    <string name="sample_overview">As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain.</string>
+
+    <!--Sorting home screen-->
+    <string name="sort_by">Sort By</string>
+    <string name="sort_by_popularity">Popularity</string>
+    <string name="sort_by_rating">Rating</string>
+
+    <!-- Transition name-->
+    <string name="poster_image_transition">poster_image_transition</string>
+
+    <string name="rating_format">%.1f</string>
+    <string name="rating_label">Ratings</string>
+    <string name="backdrop_image_desc">backdrop image for movie</string>
+    <string name="poster_image_desc">poster image for movie</string>
+    <string name="overview_label">Story Line</string>
+    <string name="release_date_label">Release Date </string>
+    <string name="action_sort">Sort</string>
+    <string name="content_attribution">content attribution</string>
 </resources>

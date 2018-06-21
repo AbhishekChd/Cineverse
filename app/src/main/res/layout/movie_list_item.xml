@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movie_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/margin_movie_card"
+    android:layout_marginEnd="@dimen/margin_movie_card"
+    android:layout_marginStart="@dimen/margin_movie_card"
+    android:layout_marginTop="@dimen/margin_movie_card"
+    app:cardCornerRadius="@dimen/cardview_default_radius">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_movie_poster"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/poster_height"
+            android:contentDescription="@string/poster_image_desc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/poster_w185_thor" />
+
+        <TextView
+            android:id="@+id/tv_movie_title"
+            style="@style/MoviePosterTextView"
+            android:layout_marginTop="@dimen/card_internal_padding"
+            android:fontFamily="sans-serif"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/movie_card_title"
+            tools:text="@string/sample_movie_title" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MoviePosterTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rating_label"
+                android:textSize="@dimen/movie_card_rating_label" />
+
+            <TextView
+                android:id="@+id/tv_movie_rating"
+                style="@style/MoviePosterTextView"
+                android:textColor="@android:color/holo_red_light"
+                tools:text="@string/sample_rating" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
