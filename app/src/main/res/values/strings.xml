@@ -21,4 +21,5 @@
     <string name="release_date_label">Release Date </string>
     <string name="action_sort">Sort</string>
     <string name="content_attribution">content attribution</string>
+    <string name="splash_logo_content_desc">splash logo</string>
 </resources>
