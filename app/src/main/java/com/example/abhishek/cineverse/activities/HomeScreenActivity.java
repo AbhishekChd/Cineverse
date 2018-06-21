@@ -45,12 +45,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     private MovieViewModel movieViewModel;
     private SortDialogFragment sortDialog;
     private Snackbar noInternetSnack;
-
-    @Override
-    protected void onDestroy() {
-        noInternetSnack = null;
-        super.onDestroy();
-    }
+    private MovieAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,45 +61,41 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
         sortDialog = new SortDialogFragment();
 
-        showDataOrError();
-    }
-
-    private void showDataOrError() {
-
-        if (!isConnected()) {
-            noInternetSnack =
-                    Snackbar.make(findViewById(R.id.coordinator), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Retry", view -> showDataOrError())
-                            .setActionTextColor(getResources().getColor(R.color.colorAccent));
-            noInternetSnack.show();
-        } else {
-            noInternetSnack = null;
-            loadAndDisplayMovies();
-        }
-    }
-
-    private boolean isConnected() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return connectivityManager.getActiveNetworkInfo() != null
-                && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
-
-    private void loadAndDisplayMovies() {
         // Set grid layout and Adapter
         int orientation = getResources().getConfiguration().orientation;
         GridLayoutManager layoutManager =
                 new GridLayoutManager(this, orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 4);
-        MovieAdapter adapter = new MovieAdapter(this, this);
+        adapter = new MovieAdapter(this, this);
         rvMoviesList.setAdapter(adapter);
         rvMoviesList.setLayoutManager(layoutManager);
 
         // Setup ViewModel and LiveData
         movieViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MovieViewModel.class);
-        movieViewModel.getMoviesLiveData(this).observe(this, movies -> {
-            Log.v("Debug App", "Fetched Data: " + movies.toString());
-            adapter.setMovieData(movies);
+        movieViewModel.getMoviesLiveData().observe(this, movies -> {
+            if (movies != null) {
+                Log.v("Debug App", "Fetched Data: " + movies.toString());
+                adapter.setMovieData(movies);
+            }
         });
+
+        showDataOrError(null);
+    }
+
+    /**
+     * Show data or error based on connectivity
+     * @param choice Selected option for sort
+     */
+    private void showDataOrError(String choice) {
+        if (!isConnected()) {
+            noInternetSnack =
+                    Snackbar.make(findViewById(R.id.coordinator), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", view -> showDataOrError(choice))
+                            .setActionTextColor(getResources().getColor(R.color.colorAccent));
+            noInternetSnack.show();
+        } else {
+            noInternetSnack = null;
+            movieViewModel.sortMoviesBy(this, choice);
+        }
     }
 
     @Override
@@ -131,7 +122,19 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     public void onDialogItemClick(int which) {
         sortDialog.dismiss();
         String[] options = getResources().getStringArray(R.array.filter_sort);
-        movieViewModel.sortMoviesBy(this, options[which]);
+        showDataOrError(options[which]);
+    }
+
+    /**
+     * Check internet connection
+     *
+     * @return returns true if connected
+     */
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo() != null
+                && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -139,7 +142,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     public void onClick(int index) {
         DetailFragment fragment = DetailFragment.newInstance(
                 movieViewModel
-                        .getMoviesLiveData(this)
+                        .getMoviesLiveData()
                         .getValue()
                         .get(index)
         );
@@ -150,5 +153,11 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         fragmentManager.replace(R.id.fragment_container, fragment, "TAG");
 //        fragmentManager.addSharedElement(v, movieViewModel.getMoviesLiveData(this).getValue().get(index).getTitle());
         fragmentManager.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        noInternetSnack = null;
+        super.onDestroy();
     }
 }
