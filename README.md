@@ -23,3 +23,6 @@ TheMovieDbApi_Api_Key=<YOUR API KEY>
 - [Udacity](https://udacity.com/) For teaching me Android
 - [Uplabs](https://www.uplabs.com/) Design inspiration
 - [Freepik](https://www.freepik.com/) Free image for app logo
+
+#### License
+GNU General Public License v3.0
