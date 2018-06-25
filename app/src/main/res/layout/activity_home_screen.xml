@@ -22,9 +22,9 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:titleTextColor="@color/colorTextDark" />
+                app:titleTextAppearance="@style/TitleBarText"/>
 
         </android.support.design.widget.AppBarLayout>
 

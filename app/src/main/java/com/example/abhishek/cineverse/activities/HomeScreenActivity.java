@@ -56,8 +56,6 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
         // Setup toolbar
         setSupportActionBar(toolbar);
-        Typeface font = ResourcesCompat.getFont(this, R.font.pacifico_regular);
-        ((TextView) toolbar.getChildAt(0)).setTypeface(font);
 
         sortDialog = new SortDialogFragment();
 
