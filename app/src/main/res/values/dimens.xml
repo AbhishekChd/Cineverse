@@ -2,17 +2,16 @@
 <resources>
     <!-- Card and it's components dimensions-->
     <dimen name="margin_movie_card">8dp</dimen>
-    <dimen name="card_internal_padding">4dp</dimen>
-    <dimen name="movie_card_title">16sp</dimen>
-    <dimen name="movie_card_rating_label">14sp</dimen>
-    <dimen name="text_padding_vertical">8dp</dimen>
-    <dimen name="text_padding_horizontal">4dp</dimen>
-    <dimen name="poster_height">220dp</dimen>
+    <dimen name="list_item_text">14sp</dimen>
+    <dimen name="list_item_view_margin_small">4dp</dimen>
+    <dimen name="list_item_view_margin">8dp</dimen>
+
 
     <!-- Divider height or width-->
     <dimen name="divider_width">1dp</dimen>
 
     <!-- Details layout -->
+    <dimen name="poster_height">220dp</dimen>
     <dimen name="ratings_progress_size">52dp</dimen>
     <dimen name="details_view_margin">8dp</dimen>
     <dimen name="horizontal_separation_margin">22dp</dimen>
@@ -23,6 +22,7 @@
     <dimen name="movie_overview_headline">24sp</dimen>
     <dimen name="movie_overview_divider_width">76dp</dimen>
     <dimen name="movie_overview_divider_height">8dp</dimen>
+    <dimen name="card_internal_padding">4dp</dimen>
 
     <!--Splash screen-->
     <dimen name="splash_logo_text_size">68sp</dimen>

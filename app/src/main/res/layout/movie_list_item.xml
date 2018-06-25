@@ -7,52 +7,63 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginBottom="@dimen/margin_movie_card"
-    android:layout_marginEnd="@dimen/margin_movie_card"
-    android:layout_marginStart="@dimen/margin_movie_card"
-    android:layout_marginTop="@dimen/margin_movie_card"
+    android:layout_marginBottom="@dimen/list_item_view_margin"
+    android:layout_marginEnd="@dimen/list_item_view_margin"
+    android:layout_marginStart="@dimen/list_item_view_margin"
+    android:layout_marginTop="@dimen/list_item_view_margin"
     app:cardCornerRadius="@dimen/cardview_default_radius">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/list_item_view_margin">
 
         <ImageView
             android:id="@+id/iv_movie_poster"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/poster_height"
+            android:layout_height="0dp"
             android:contentDescription="@string/poster_image_desc"
             android:scaleType="centerCrop"
-            android:src="@drawable/poster_w185_thor" />
+            android:src="@drawable/poster_w185_thor"
+            app:layout_constraintDimensionRatio="27:41"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_movie_title"
-            style="@style/MoviePosterTextView"
-            android:layout_marginTop="@dimen/card_internal_padding"
-            android:fontFamily="sans-serif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_item_view_margin"
+            android:layout_marginTop="@dimen/list_item_view_margin"
+            android:fontFamily="@font/lato_bold"
+            android:lines="2"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/movie_card_title"
+            android:textSize="@dimen/list_item_text"
+            app:layout_constraintStart_toStartOf="@+id/iv_movie_poster"
+            app:layout_constraintTop_toBottomOf="@id/iv_movie_poster"
             tools:text="@string/sample_movie_title" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/rating_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/list_item_view_margin_small"
+            android:text="@string/rating_label"
+            android:textSize="@dimen/list_item_text"
+            app:layout_constraintStart_toStartOf="@+id/tv_movie_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_movie_title" />
 
-            <TextView
-                style="@style/MoviePosterTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rating_label"
-                android:textSize="@dimen/movie_card_rating_label" />
+        <TextView
+            android:id="@+id/tv_movie_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_item_view_margin"
+            android:textColor="@android:color/holo_red_light"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rating_label"
+            app:layout_constraintStart_toEndOf="@+id/rating_label"
+            tools:text="@string/sample_rating" />
 
-            <TextView
-                android:id="@+id/tv_movie_rating"
-                style="@style/MoviePosterTextView"
-                android:textColor="@android:color/holo_red_light"
-                tools:text="@string/sample_rating" />
-        </LinearLayout>
-
-    </LinearLayout>
-
+    </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
