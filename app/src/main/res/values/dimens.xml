@@ -11,12 +11,13 @@
     <dimen name="divider_width">1dp</dimen>
 
     <!-- Details layout -->
-    <dimen name="poster_height">220dp</dimen>
-    <dimen name="ratings_progress_size">52dp</dimen>
+    <dimen name="ratings_progress_size">42dp</dimen>
     <dimen name="details_view_margin">8dp</dimen>
     <dimen name="horizontal_separation_margin">22dp</dimen>
     <dimen name="vertical_separation_margin">16dp</dimen>
-    <dimen name="rating_tv_text_size">18sp</dimen>
+    <dimen name="rating_tv_text_size">14sp</dimen>
+    <dimen name="title_text_size">18sp</dimen>
+    <dimen name="top_content_vertical_bias">0.85</dimen>
 
     <!-- Movie plot synopsis card-->
     <dimen name="movie_overview_headline">24sp</dimen>
@@ -26,4 +27,8 @@
 
     <!--Splash screen-->
     <dimen name="splash_logo_text_size">68sp</dimen>
+
+    <!-- Details View Poster -->
+    <dimen name="default_poster_radius">2dp</dimen>
+    <dimen name="default_poster_elevation">2dp</dimen>
 </resources>

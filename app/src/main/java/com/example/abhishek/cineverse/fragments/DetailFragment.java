@@ -1,14 +1,19 @@
 package com.example.abhishek.cineverse.fragments;
 
 
+import android.annotation.TargetApi;
+import android.graphics.Outline;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -110,6 +115,7 @@ public class DetailFragment extends Fragment {
         tvRating.setText(getString(R.string.rating_format, movie.getVotes()));
         pbRating.setProgress((int) movie.getVotes() * 10);
 
+
         Picasso.with(getContext())
                 .load(ImageUrlUtils.getLargePosterUrl(movie.getPosterPath()))
                 .noFade()
@@ -118,6 +124,22 @@ public class DetailFragment extends Fragment {
         Picasso.with(getContext())
                 .load(ImageUrlUtils.getSmallBackdropUrl(movie.getBackdropPath()))
                 .into(ivBackdrop);
+
+        // Adding elevation for all versions
+        ViewCompat.setElevation(ivMoviePoster, getResources().getDimension(R.dimen.default_poster_elevation));
+
+        // Adding radius for supported devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ivMoviePoster.setOutlineProvider(new ViewOutlineProvider() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), getResources().getDimension(R.dimen.default_poster_radius));
+                }
+            });
+            ivMoviePoster.setClipToOutline(true);
+        }
+
     }
 
     @Override

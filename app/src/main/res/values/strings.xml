@@ -22,4 +22,6 @@
     <string name="action_sort">Sort</string>
     <string name="content_attribution">content attribution</string>
     <string name="splash_logo_content_desc">splash logo</string>
+    <string name="action_favourites">Favourites</string>
+    <string name="fav_button">Favourite Button</string>
 </resources>

@@ -11,7 +11,7 @@
     <color name="colorTextBlack">#000000</color>
 
     <!-- Color for drawable resources-->
-    <color name="backdrop_blur_start">#00ffffff</color>
+    <color name="backdrop_blur_start">#33000000</color>
     <color name="backdrop_blur_end">#ffffffff</color>
 
     <!-- Colors for details card gradient source:uiGradients style:Azur Lane-->
