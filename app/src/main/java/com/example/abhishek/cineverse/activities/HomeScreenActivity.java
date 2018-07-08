@@ -19,22 +19,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.abhishek.cineverse.AppExecutors;
+import com.example.abhishek.cineverse.BuildConfig;
 import com.example.abhishek.cineverse.R;
 import com.example.abhishek.cineverse.adapters.MovieAdapter;
 import com.example.abhishek.cineverse.data.MovieDatabase;
+import com.example.abhishek.cineverse.data.UrlContract;
 import com.example.abhishek.cineverse.fragments.DetailFragment;
 import com.example.abhishek.cineverse.fragments.SortDialogFragment;
 import com.example.abhishek.cineverse.models.Movie;
+import com.example.abhishek.cineverse.models.MovieJsonContainer;
 import com.example.abhishek.cineverse.models.MovieViewModel;
+import com.example.abhishek.cineverse.network.MovieClient;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeScreenActivity extends AppCompatActivity implements SortDialogFragment.SortDialogListener, MovieAdapter.MovieAdapterOnClickHandler {
 
     private static final String sortDialogFragmentTag = "sort-dialog";
+    private static final String LOG_TAG = HomeScreenActivity.class.getSimpleName();
     @BindView(R.id.rv_movies_list)
     RecyclerView rvMoviesList;
 
@@ -80,6 +92,32 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         });
 
         showDataOrError(null);
+
+        Retrofit.Builder builder =
+                new Retrofit
+                        .Builder()
+                        .baseUrl(UrlContract.BASE_API_URL)
+                        .client(new OkHttpClient.Builder()
+                                .cache(new Cache(getCacheDir(), 1024 * 1024)).build())
+                        .addConverterFactory(GsonConverterFactory.create());
+
+        Call<MovieJsonContainer> call = builder.build().create(MovieClient.class).getPopularMovies(BuildConfig.ApiKey);
+        call.enqueue(new Callback<MovieJsonContainer>() {
+            @Override
+            public void onResponse(Call<MovieJsonContainer> call, Response<MovieJsonContainer> response) {
+                if (response.body() != null) {
+                    String movies = response.body().movies.toString();
+                    Log.d(LOG_TAG, "Retrofit call: " + movies);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieJsonContainer> call, Throwable t) {
+                Log.d(LOG_TAG, "Retrofit error: " + t.getMessage());
+            }
+        });
+
+        Log.d(LOG_TAG, "");
     }
 
     /**
