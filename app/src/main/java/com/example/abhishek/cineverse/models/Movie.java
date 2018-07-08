@@ -1,12 +1,18 @@
 package com.example.abhishek.cineverse.models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "movie")
 public class Movie implements Parcelable {
 
+    @Ignore
     public static final Creator CREATOR = new Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel source) {
@@ -18,17 +24,29 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+    @PrimaryKey
+    private int id;
+
     private String title;
+
     @SerializedName("vote_average")
     private float votes;
-    private int id;
+
+    @ColumnInfo(name = "original_title")
     @SerializedName("original_title")
     private String originalTitle;
+
     private String overview;
+
+    @ColumnInfo(name = "release_date")
     @SerializedName("release_date")
     private String releaseDate;
+
+    @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
     private String posterPath;
+
+    @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     private String backdropPath;
 
