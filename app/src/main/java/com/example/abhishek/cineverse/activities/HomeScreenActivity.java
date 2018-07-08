@@ -3,7 +3,6 @@ package com.example.abhishek.cineverse.activities;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,13 +17,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
+import com.example.abhishek.cineverse.AppExecutors;
 import com.example.abhishek.cineverse.R;
 import com.example.abhishek.cineverse.adapters.MovieAdapter;
+import com.example.abhishek.cineverse.data.MovieDatabase;
 import com.example.abhishek.cineverse.fragments.DetailFragment;
 import com.example.abhishek.cineverse.fragments.SortDialogFragment;
+import com.example.abhishek.cineverse.models.Movie;
 import com.example.abhishek.cineverse.models.MovieViewModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +75,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
             if (movies != null) {
                 Log.v("Debug App", "Fetched Data: " + movies.toString());
                 adapter.setMovieData(movies);
+                storeMovies(movies);
             }
         });
 
@@ -80,7 +83,22 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
     }
 
     /**
+     * Created {@link AppExecutors} and this method for Testing purpose only
+     *
+     * @param movies List of {@link Movie} to be inserted
+     */
+    private void storeMovies(List<Movie> movies) {
+        Log.d(HomeScreenActivity.class.getSimpleName(), "Sending data to database");
+        MovieDatabase database = MovieDatabase.getInstance(this);
+        AppExecutors.getInstance().getDiskIO().execute(() -> {
+            Movie[] moviesArray = movies.toArray(new Movie[movies.size()]);
+            database.movieDao().bulkMovieInsert(moviesArray);
+        });
+    }
+
+    /**
      * Show data or error based on connectivity
+     *
      * @param choice Selected option for sort
      */
     private void showDataOrError(String choice) {

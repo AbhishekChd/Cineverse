@@ -1,5 +1,6 @@
 package com.example.abhishek.cineverse.data;
 
+import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 
@@ -8,6 +9,7 @@ import com.example.abhishek.cineverse.models.Movie;
 /**
  * Movie DAO stores and retrieves {@link Movie} to the database using {@link android.arch.persistence.room.Room}
  */
+@Dao
 public interface MovieDao {
 
     /**
