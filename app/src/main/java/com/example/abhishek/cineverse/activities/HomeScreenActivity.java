@@ -23,25 +23,21 @@ import com.example.abhishek.cineverse.BuildConfig;
 import com.example.abhishek.cineverse.R;
 import com.example.abhishek.cineverse.adapters.MovieAdapter;
 import com.example.abhishek.cineverse.data.MovieDatabase;
-import com.example.abhishek.cineverse.data.UrlContract;
 import com.example.abhishek.cineverse.fragments.DetailFragment;
 import com.example.abhishek.cineverse.fragments.SortDialogFragment;
 import com.example.abhishek.cineverse.models.Movie;
 import com.example.abhishek.cineverse.models.MovieJsonContainer;
 import com.example.abhishek.cineverse.models.MovieViewModel;
 import com.example.abhishek.cineverse.network.MovieClient;
+import com.example.abhishek.cineverse.network.MovieService;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeScreenActivity extends AppCompatActivity implements SortDialogFragment.SortDialogListener, MovieAdapter.MovieAdapterOnClickHandler {
 
@@ -93,21 +89,16 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
         showDataOrError(null);
 
-        Retrofit.Builder builder =
-                new Retrofit
-                        .Builder()
-                        .baseUrl(UrlContract.BASE_API_URL)
-                        .client(new OkHttpClient.Builder()
-                                .cache(new Cache(getCacheDir(), 1024 * 1024)).build())
-                        .addConverterFactory(GsonConverterFactory.create());
+        MovieClient movieClient = MovieService.getInstance(getApplicationContext());
+        Call<MovieJsonContainer> call = movieClient.getPopularMovies(BuildConfig.ApiKey);
 
-        Call<MovieJsonContainer> call = builder.build().create(MovieClient.class).getPopularMovies(BuildConfig.ApiKey);
         call.enqueue(new Callback<MovieJsonContainer>() {
             @Override
             public void onResponse(Call<MovieJsonContainer> call, Response<MovieJsonContainer> response) {
                 if (response.body() != null) {
                     String movies = response.body().movies.toString();
                     Log.d(LOG_TAG, "Retrofit call: " + movies);
+                    Log.d(LOG_TAG, "Retrofit call: " + response.headers());
                 }
             }
 
