@@ -1,32 +1,54 @@
 package com.example.abhishek.cineverse.models;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.abhishek.cineverse.BuildConfig;
-import com.example.abhishek.cineverse.R;
 import com.example.abhishek.cineverse.data.UrlContract;
-import com.example.abhishek.cineverse.network.GsonRequest;
-import com.example.abhishek.cineverse.network.NetworkRequestQueue;
-import com.google.gson.annotations.SerializedName;
+import com.example.abhishek.cineverse.network.MovieClient;
+import com.example.abhishek.cineverse.network.MovieService;
 
 import java.util.List;
 
-public class MovieViewModel extends ViewModel {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    @SerializedName("results")
-    public List<Movie> mMovies;
+public class MovieViewModel extends AndroidViewModel {
+
+    private static final String LOG_TAG = MovieViewModel.class.getSimpleName();
+    private final Callback<MovieJsonContainer> retrofitCallback;
     private MutableLiveData<List<Movie>> mMutableMovieList;
 
-    @Override
-    public String toString() {
-        return "MovieViewModel{" +
-                "mMovies=" + mMovies +
-                '}';
+    public MovieViewModel(@NonNull Application application) {
+        super(application);
+        retrofitCallback = new Callback<MovieJsonContainer>() {
+            @Override
+            public void onResponse(Call<MovieJsonContainer> call, Response<MovieJsonContainer> moviesResponse) {
+                if (moviesResponse.raw().cacheResponse() != null) {
+                    Log.d(LOG_TAG, "Response from cache");
+                }
+                if (moviesResponse.raw().networkResponse() != null) {
+                    Log.d(LOG_TAG, "Response from network");
+                }
+
+                MovieJsonContainer container = moviesResponse.body();
+                if (container != null) {
+                    Log.d(LOG_TAG, String.valueOf(moviesResponse.headers()));
+                    mMutableMovieList.setValue(container.movies);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieJsonContainer> call, Throwable t) {
+                Log.e(getClass().getSimpleName(), "Error parsing JSON: " + t.getMessage());
+            }
+        };
     }
 
     public LiveData<List<Movie>> getMoviesLiveData() {
@@ -37,41 +59,29 @@ public class MovieViewModel extends ViewModel {
         return mMutableMovieList;
     }
 
-    private void getMovies(Context context, String sort) {
-        String url = Uri.parse(UrlContract.BASE_URL_MOVIE).buildUpon()
-                .appendPath(
-                        sort.equalsIgnoreCase(context.getString(R.string.sort_by_popularity)) ?
-                                UrlContract.ENDPOINT_MOVIE_POPULAR
-                                : UrlContract.ENDPOINT_MOVIE_TOP_RATED
-                )
-                .appendQueryParameter("language", "en")
-                .appendQueryParameter("page", "1")
-                .appendQueryParameter("api_key", BuildConfig.ApiKey)
-                .toString();
-
-        GsonRequest<MovieJsonContainer> movieGsonRequest = new GsonRequest<>(
-                url,
-                MovieJsonContainer.class,
-                null,
-                response -> mMutableMovieList.setValue(response.movies),
-                error -> Log.e(getClass().getSimpleName(), "Error parsing JSON: " + error.getMessage())
-        );
-        NetworkRequestQueue.getInstance(context).addToRequestQueue(movieGsonRequest);
-    }
-
     /**
      * Sort movies based on selection
      *
      * @param sort Sort criteria and Defaults when passed null
      */
-    public void sortMoviesBy(Context context, String sort) {
-        if (sort == null)
-            getMovies(context, context.getString(R.string.sort_by_popularity));
-        else if (sort.equalsIgnoreCase(context.getString(R.string.sort_by_popularity)) ||
-                sort.equalsIgnoreCase(context.getString(R.string.sort_by_rating)))
-            getMovies(context, sort);
-        else
-            getMovies(context, context.getString(R.string.sort_by_popularity));
-    }
+    public void fetchMoviesByFilter(int sort) {
+        Context context = getApplication().getBaseContext();
 
+        MovieClient movieService = MovieService.getInstance(context);
+        Call<MovieJsonContainer> call;
+
+        switch (sort) {
+            case UrlContract.POPULAR:
+                call = movieService.getPopularMovies(BuildConfig.ApiKey);
+                break;
+            case UrlContract.TOP_RATED:
+                call = movieService.getTopRatedMovies(BuildConfig.ApiKey);
+                break;
+            default:
+                call = movieService.getPopularMovies(BuildConfig.ApiKey);
+                break;
+        }
+
+        call.enqueue(retrofitCallback);
+    }
 }

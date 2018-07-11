@@ -9,4 +9,7 @@ import retrofit2.http.Query;
 public interface MovieClient {
     @GET("movie/popular")
     Call<MovieJsonContainer> getPopularMovies(@Query("api_key") String apiKey);
+
+    @GET("movie/top_rated")
+    Call<MovieJsonContainer> getTopRatedMovies(@Query("api_key") String apiKey);
 }

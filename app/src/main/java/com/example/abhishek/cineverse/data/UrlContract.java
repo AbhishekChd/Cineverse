@@ -7,8 +7,8 @@ public final class UrlContract {
     public static final String ENDPOINT_MOVIE = "movie";
     public static final String BASE_URL_MOVIE = BASE_API_URL + "movie";
 
-    public static final String ENDPOINT_MOVIE_POPULAR = "popular";
-    public static final String ENDPOINT_MOVIE_TOP_RATED = "top_rated";
+    public static final int POPULAR = 0;
+    public static final int TOP_RATED = 1;
 
     // Image base urls
     public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";

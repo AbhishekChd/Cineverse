@@ -13,6 +13,10 @@ public class MovieService {
     private static final Object LOCK = new Object();
     private static MovieClient sInstance;
 
+    // Private constructor so that nobody can call it
+    private MovieService() {
+    }
+
     public static MovieClient getInstance(Context context) {
         if (sInstance == null) {
             synchronized (LOCK) {

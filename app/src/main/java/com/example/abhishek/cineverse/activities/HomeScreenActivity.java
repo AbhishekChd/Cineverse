@@ -19,25 +19,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.abhishek.cineverse.AppExecutors;
-import com.example.abhishek.cineverse.BuildConfig;
 import com.example.abhishek.cineverse.R;
 import com.example.abhishek.cineverse.adapters.MovieAdapter;
 import com.example.abhishek.cineverse.data.MovieDatabase;
+import com.example.abhishek.cineverse.data.UrlContract;
 import com.example.abhishek.cineverse.fragments.DetailFragment;
 import com.example.abhishek.cineverse.fragments.SortDialogFragment;
 import com.example.abhishek.cineverse.models.Movie;
-import com.example.abhishek.cineverse.models.MovieJsonContainer;
 import com.example.abhishek.cineverse.models.MovieViewModel;
-import com.example.abhishek.cineverse.network.MovieClient;
-import com.example.abhishek.cineverse.network.MovieService;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeScreenActivity extends AppCompatActivity implements SortDialogFragment.SortDialogListener, MovieAdapter.MovieAdapterOnClickHandler {
 
@@ -81,34 +75,12 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         movieViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MovieViewModel.class);
         movieViewModel.getMoviesLiveData().observe(this, movies -> {
             if (movies != null) {
-                Log.v("Debug App", "Fetched Data: " + movies.toString());
                 adapter.setMovieData(movies);
                 storeMovies(movies);
             }
         });
 
-        showDataOrError(null);
-
-        MovieClient movieClient = MovieService.getInstance(getApplicationContext());
-        Call<MovieJsonContainer> call = movieClient.getPopularMovies(BuildConfig.ApiKey);
-
-        call.enqueue(new Callback<MovieJsonContainer>() {
-            @Override
-            public void onResponse(Call<MovieJsonContainer> call, Response<MovieJsonContainer> response) {
-                if (response.body() != null) {
-                    String movies = response.body().movies.toString();
-                    Log.d(LOG_TAG, "Retrofit call: " + movies);
-                    Log.d(LOG_TAG, "Retrofit call: " + response.headers());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieJsonContainer> call, Throwable t) {
-                Log.d(LOG_TAG, "Retrofit error: " + t.getMessage());
-            }
-        });
-
-        Log.d(LOG_TAG, "");
+        showDataOrError(UrlContract.POPULAR);
     }
 
     /**
@@ -130,7 +102,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
      *
      * @param choice Selected option for sort
      */
-    private void showDataOrError(String choice) {
+    private void showDataOrError(int choice) {
         if (!isConnected()) {
             noInternetSnack =
                     Snackbar.make(findViewById(R.id.coordinator), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
@@ -139,7 +111,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
             noInternetSnack.show();
         } else {
             noInternetSnack = null;
-            movieViewModel.sortMoviesBy(this, choice);
+            movieViewModel.fetchMoviesByFilter(choice);
         }
     }
 
@@ -165,9 +137,18 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
     @Override
     public void onDialogItemClick(int which) {
+        switch (which) {
+            case 0:
+                showDataOrError(UrlContract.POPULAR);
+                break;
+            case 1:
+                showDataOrError(UrlContract.TOP_RATED);
+                break;
+            default:
+                showDataOrError(UrlContract.POPULAR);
+                break;
+        }
         sortDialog.dismiss();
-        String[] options = getResources().getStringArray(R.array.filter_sort);
-        showDataOrError(options[which]);
     }
 
     /**
