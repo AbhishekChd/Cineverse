@@ -51,6 +51,8 @@ public class DetailFragment extends Fragment {
     ProgressBar pbRating;
     @BindView(R.id.toolbar_detail)
     Toolbar toolbar;
+    @BindView(R.id.iv_fav_movie)
+    ImageView ivFavMovie;
     private Movie movie;
 
 
@@ -107,13 +109,32 @@ public class DetailFragment extends Fragment {
         tvOverview.setText(movie.getOverview());
 
         tvReleaseDate.setText(
-                DateUtils.getFullDateFromShortDate(
-                        movie.getReleaseDate()
-                )
+                DateUtils.getFullDateFromShortDate(movie.getReleaseDate())
         );
 
         tvRating.setText(getString(R.string.rating_format, movie.getVotes()));
         pbRating.setProgress((int) movie.getVotes() * 10);
+
+        setupImageViews();
+
+        // Adding elevation for all versions
+        ViewCompat.setElevation(ivMoviePoster, getResources().getDimension(R.dimen.default_poster_elevation));
+
+        // Adding radius for supported devices
+        adRadiusToPoster();
+    }
+
+    private void setupImageViews() {
+        if (movie.isFavorite()) {
+            ivFavMovie.setImageDrawable(
+                    getResources()
+                            .getDrawable(R.drawable.ic_action_deselect_fav)
+            );
+        } else {
+            ivFavMovie.setImageDrawable(
+                    getResources()
+                            .getDrawable(R.drawable.ic_action_select_fav));
+        }
 
 
         Picasso.with(getContext())
@@ -124,11 +145,9 @@ public class DetailFragment extends Fragment {
         Picasso.with(getContext())
                 .load(ImageUrlUtils.getSmallBackdropUrl(movie.getBackdropPath()))
                 .into(ivBackdrop);
+    }
 
-        // Adding elevation for all versions
-        ViewCompat.setElevation(ivMoviePoster, getResources().getDimension(R.dimen.default_poster_elevation));
-
-        // Adding radius for supported devices
+    private void adRadiusToPoster() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ivMoviePoster.setOutlineProvider(new ViewOutlineProvider() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -139,7 +158,6 @@ public class DetailFragment extends Fragment {
             });
             ivMoviePoster.setClipToOutline(true);
         }
-
     }
 
     @Override

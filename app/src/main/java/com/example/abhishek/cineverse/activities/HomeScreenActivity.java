@@ -28,6 +28,7 @@ import com.example.abhishek.cineverse.fragments.SortDialogFragment;
 import com.example.abhishek.cineverse.models.Movie;
 import com.example.abhishek.cineverse.models.MovieViewModel;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,37 +65,31 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         sortDialog = new SortDialogFragment();
 
         // Set grid layout and Adapter
+        setupRecyclerView();
+
+        // Setup ViewModel and LiveData
+        setupMoviesViewModel();
+
+        // Display data on recycler view or error if nt internet
+        showDataOrError(UrlContract.POPULAR);
+    }
+
+    private void setupMoviesViewModel() {
+        movieViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MovieViewModel.class);
+        movieViewModel.getMoviesLiveData().observe(this, movies -> {
+            if (movies != null) {
+                adapter.setMovieData(movies);
+            }
+        });
+    }
+
+    private void setupRecyclerView() {
         int orientation = getResources().getConfiguration().orientation;
         GridLayoutManager layoutManager =
                 new GridLayoutManager(this, orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 4);
         adapter = new MovieAdapter(this, this);
         rvMoviesList.setAdapter(adapter);
         rvMoviesList.setLayoutManager(layoutManager);
-
-        // Setup ViewModel and LiveData
-        movieViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MovieViewModel.class);
-        movieViewModel.getMoviesLiveData().observe(this, movies -> {
-            if (movies != null) {
-                adapter.setMovieData(movies);
-                storeMovies(movies);
-            }
-        });
-
-        showDataOrError(UrlContract.POPULAR);
-    }
-
-    /**
-     * Created {@link AppExecutors} and this method for Testing purpose only
-     *
-     * @param movies List of {@link Movie} to be inserted
-     */
-    private void storeMovies(List<Movie> movies) {
-        Log.d(HomeScreenActivity.class.getSimpleName(), "Sending data to database");
-        MovieDatabase database = MovieDatabase.getInstance(this);
-        AppExecutors.getInstance().getDiskIO().execute(() -> {
-            Movie[] moviesArray = movies.toArray(new Movie[movies.size()]);
-            database.movieDao().bulkMovieInsert(moviesArray);
-        });
     }
 
     /**
@@ -113,42 +108,6 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
             noInternetSnack = null;
             movieViewModel.fetchMoviesByFilter(choice);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_filter:
-                // Start sort dialog
-                sortDialog.show(getSupportFragmentManager(), sortDialogFragmentTag);
-                return true;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onDialogItemClick(int which) {
-        switch (which) {
-            case 0:
-                showDataOrError(UrlContract.POPULAR);
-                break;
-            case 1:
-                showDataOrError(UrlContract.TOP_RATED);
-                break;
-            default:
-                showDataOrError(UrlContract.POPULAR);
-                break;
-        }
-        sortDialog.dismiss();
     }
 
     /**
@@ -179,6 +138,65 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         fragmentManager.replace(R.id.fragment_container, fragment, "TAG");
 //        fragmentManager.addSharedElement(v, movieViewModel.getMoviesLiveData(this).getValue().get(index).getTitle());
         fragmentManager.commit();
+    }
+
+    @Override
+    public void onFavButtonClick(int index) {
+        Log.d(LOG_TAG, "Entering fav onClick");
+        MovieDatabase database = MovieDatabase.getInstance(this);
+        AppExecutors.getInstance().getDiskIO().execute(() -> {
+            List<Movie> movieList = movieViewModel
+                    .getMoviesLiveData()
+                    .getValue();
+
+            if (movieList != null) {
+                Movie movie = movieList.get(index);
+                if (movie.isFavorite()) {
+                    database.movieDao().deleteMovie(movie);
+                    movie.setFavorite(false);
+                } else {
+                    movie.setFavorite(true);
+                    database.movieDao().insertMovie(movieList.get(index));
+                }
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDialogItemClick(int which) {
+        switch (which) {
+            case 0:
+                showDataOrError(UrlContract.POPULAR);
+                break;
+            case 1:
+                showDataOrError(UrlContract.TOP_RATED);
+                break;
+            default:
+                showDataOrError(UrlContract.POPULAR);
+                break;
+        }
+        sortDialog.dismiss();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_filter:
+                // Start sort dialog
+                sortDialog.show(getSupportFragmentManager(), sortDialogFragmentTag);
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

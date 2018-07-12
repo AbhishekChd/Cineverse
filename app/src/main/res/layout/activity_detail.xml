@@ -47,12 +47,12 @@
             android:text="@string/sample_movie_title"
             android:textColor="@android:color/black"
             android:textSize="@dimen/title_text_size"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintEnd_toStartOf="@+id/iv_fav_movie"
             app:layout_constraintStart_toEndOf="@id/iv_movie_poster"
             app:layout_constraintTop_toBottomOf="@id/iv_backdrop" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_fav_movie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/details_view_margin"

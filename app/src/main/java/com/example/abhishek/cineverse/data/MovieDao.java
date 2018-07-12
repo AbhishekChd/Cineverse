@@ -1,8 +1,10 @@
 package com.example.abhishek.cineverse.data;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
+import android.arch.persistence.room.Query;
 
 import com.example.abhishek.cineverse.models.Movie;
 
@@ -28,4 +30,9 @@ public interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkMovieInsert(Movie... movies);
 
+    @Query("SELECT id FROM movie WHERE isFavorite = 1")
+    int[] getFavoriteMovieIds();
+
+    @Delete
+    void deleteMovie(Movie movie);
 }

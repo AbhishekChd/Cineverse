@@ -7,6 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "movie")
@@ -50,6 +51,10 @@ public class Movie implements Parcelable {
     @SerializedName("backdrop_path")
     private String backdropPath;
 
+    // TODO: 12/7/18 Add field to Parcelable
+    @Expose(serialize = false, deserialize = false)
+    private boolean isFavorite;
+
     /**
      * An instance of Movie to store it's details
      *
@@ -62,7 +67,7 @@ public class Movie implements Parcelable {
      * @param backdropPath:  Relative path for a Backdrop
      * @param votes:         Votes for the movie out of 10
      */
-    public Movie(int id, String title, String originalTitle, String overview, String releaseDate, String posterPath, String backdropPath, float votes) {
+    public Movie(int id, String title, String originalTitle, String overview, String releaseDate, String posterPath, String backdropPath, float votes, boolean isFavorite) {
         this.id = id;
         this.title = title;
         this.originalTitle = originalTitle;
@@ -71,6 +76,7 @@ public class Movie implements Parcelable {
         this.posterPath = posterPath;
         this.backdropPath = backdropPath;
         this.votes = votes;
+        this.isFavorite = isFavorite;
     }
 
     // Private constructor for Parcelable
@@ -83,6 +89,7 @@ public class Movie implements Parcelable {
         posterPath = in.readString();
         backdropPath = in.readString();
         votes = in.readFloat();
+        isFavorite = in.readByte() != 0;
     }
 
     public String getTitle() {
@@ -117,6 +124,14 @@ public class Movie implements Parcelable {
         return id;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = !isFavorite;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -128,6 +143,7 @@ public class Movie implements Parcelable {
                 ", releaseDate='" + releaseDate + '\'' +
                 ", posterPath='" + posterPath + '\'' +
                 ", backdropPath='" + backdropPath + '\'' +
+                ", isFavourite='" + isFavorite + '\'' +
                 '}';
     }
 
@@ -146,5 +162,6 @@ public class Movie implements Parcelable {
         dest.writeString(posterPath);
         dest.writeString(backdropPath);
         dest.writeFloat(votes);
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 }

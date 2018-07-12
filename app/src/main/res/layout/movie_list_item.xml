@@ -42,13 +42,13 @@
             android:lines="2"
             android:textColor="@android:color/black"
             android:textSize="@dimen/list_item_text"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintEnd_toStartOf="@+id/iv_fav"
             app:layout_constraintStart_toStartOf="@+id/iv_movie_poster"
             app:layout_constraintTop_toBottomOf="@id/iv_movie_poster"
             tools:text="@string/sample_movie_title" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/iv_fav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"

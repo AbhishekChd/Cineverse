@@ -8,11 +8,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.abhishek.cineverse.AppExecutors;
 import com.example.abhishek.cineverse.BuildConfig;
+import com.example.abhishek.cineverse.data.MovieDatabase;
 import com.example.abhishek.cineverse.data.UrlContract;
 import com.example.abhishek.cineverse.network.MovieClient;
 import com.example.abhishek.cineverse.network.MovieService;
 
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,7 +32,8 @@ public class MovieViewModel extends AndroidViewModel {
         super(application);
         retrofitCallback = new Callback<MovieJsonContainer>() {
             @Override
-            public void onResponse(Call<MovieJsonContainer> call, Response<MovieJsonContainer> moviesResponse) {
+            public void onResponse(Call<MovieJsonContainer> call
+                    , Response<MovieJsonContainer> moviesResponse) {
                 if (moviesResponse.raw().cacheResponse() != null) {
                     Log.d(LOG_TAG, "Response from cache");
                 }
@@ -40,7 +44,7 @@ public class MovieViewModel extends AndroidViewModel {
                 MovieJsonContainer container = moviesResponse.body();
                 if (container != null) {
                     Log.d(LOG_TAG, String.valueOf(moviesResponse.headers()));
-                    mMutableMovieList.setValue(container.movies);
+                    mMutableMovieList.setValue(collectFavorites(container.movies));
                 }
             }
 
@@ -83,5 +87,21 @@ public class MovieViewModel extends AndroidViewModel {
         }
 
         call.enqueue(retrofitCallback);
+    }
+
+    private List<Movie> collectFavorites(List<Movie> movies) {
+        MovieDatabase database = MovieDatabase.getInstance(getApplication());
+        AppExecutors.getInstance().getDiskIO().execute(() -> {
+            int[] favIds = database.movieDao().getFavoriteMovieIds();
+            Arrays.sort(favIds);
+
+            int n = movies.size();
+            for (int i = 0; i < n; i++) {
+                if (Arrays.binarySearch(favIds, movies.get(i).getId()) >= 0) {
+                    movies.get(i).setFavorite(true);
+                }
+            }
+        });
+        return movies;
     }
 }
