@@ -3,11 +3,14 @@ package com.example.abhishek.cineverse.data;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
+import com.example.abhishek.cineverse.helpers.DatabaseDateConverter;
 import com.example.abhishek.cineverse.models.Movie;
 
-@Database(entities = {Movie.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class}, version = 2, exportSchema = false)
+@TypeConverters(DatabaseDateConverter.class)
 public abstract class MovieDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = MovieDatabase.class.getSimpleName();

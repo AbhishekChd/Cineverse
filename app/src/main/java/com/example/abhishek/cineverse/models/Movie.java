@@ -10,6 +10,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 @Entity(tableName = "movie")
 public class Movie implements Parcelable {
 
@@ -51,9 +53,12 @@ public class Movie implements Parcelable {
     @SerializedName("backdrop_path")
     private String backdropPath;
 
-    // TODO: 12/7/18 Add field to Parcelable
     @Expose(serialize = false, deserialize = false)
     private boolean isFavorite;
+
+    @ColumnInfo(name = "date_added")
+    @Expose(serialize = false, deserialize = false)
+    private Date dateAdded;
 
     /**
      * An instance of Movie to store it's details
@@ -130,6 +135,14 @@ public class Movie implements Parcelable {
 
     public void setFavorite(boolean favorite) {
         isFavorite = !isFavorite;
+    }
+
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Date date) {
+        this.dateAdded = date;
     }
 
     @Override

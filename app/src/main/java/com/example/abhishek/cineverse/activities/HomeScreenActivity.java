@@ -28,7 +28,7 @@ import com.example.abhishek.cineverse.fragments.SortDialogFragment;
 import com.example.abhishek.cineverse.models.Movie;
 import com.example.abhishek.cineverse.models.MovieViewModel;
 
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -156,6 +156,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
                     movie.setFavorite(false);
                 } else {
                     movie.setFavorite(true);
+                    movie.setDateAdded(new Date());
                     database.movieDao().insertMovie(movieList.get(index));
                 }
             }
