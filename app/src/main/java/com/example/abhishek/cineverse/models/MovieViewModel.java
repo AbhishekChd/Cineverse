@@ -44,7 +44,7 @@ public class MovieViewModel extends AndroidViewModel {
                 MovieJsonContainer container = moviesResponse.body();
                 if (container != null) {
                     Log.d(LOG_TAG, String.valueOf(moviesResponse.headers()));
-                    mMutableMovieList.setValue(collectFavorites(container.movies));
+                    mMutableMovieList.setValue(setFavoriteMovies(container.movies));
                 }
             }
 
@@ -72,7 +72,7 @@ public class MovieViewModel extends AndroidViewModel {
         Context context = getApplication().getBaseContext();
 
         MovieClient movieService = MovieService.getInstance(context);
-        Call<MovieJsonContainer> call;
+        Call<MovieJsonContainer> call = null;
 
         switch (sort) {
             case UrlContract.POPULAR:
@@ -81,15 +81,21 @@ public class MovieViewModel extends AndroidViewModel {
             case UrlContract.TOP_RATED:
                 call = movieService.getTopRatedMovies(BuildConfig.ApiKey);
                 break;
+            case UrlContract.FAVOURITES:
+                fetchFavouriteMovies();
+                break;
             default:
                 call = movieService.getPopularMovies(BuildConfig.ApiKey);
                 break;
         }
 
-        call.enqueue(retrofitCallback);
+        if (call != null) {
+            call.enqueue(retrofitCallback);
+        }
     }
 
-    private List<Movie> collectFavorites(List<Movie> movies) {
+
+    private List<Movie> setFavoriteMovies(List<Movie> movies) {
         MovieDatabase database = MovieDatabase.getInstance(getApplication());
         AppExecutors.getInstance().getDiskIO().execute(() -> {
             int[] favIds = database.movieDao().getFavoriteMovieIds();
@@ -103,5 +109,13 @@ public class MovieViewModel extends AndroidViewModel {
             }
         });
         return movies;
+    }
+
+    private void fetchFavouriteMovies() {
+        MovieDatabase database = MovieDatabase.getInstance(getApplication());
+        AppExecutors.getInstance().getDiskIO().execute(() -> {
+            List<Movie> movies = database.movieDao().getFavouriteMovies();
+            mMutableMovieList.postValue(movies);
+        });
     }
 }

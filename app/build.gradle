@@ -28,6 +28,7 @@ android {
 
 dependencies {
     def room_version = "1.1.1"
+    def lifecycle_version = "1.1.1"
     def support_version = "27.1.1"
     def retrofit_version = "2.4.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -36,6 +37,11 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
+
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    // alternately - if using Java8, use the following instead of compiler
+    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
 
     //Retrofit for networking
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

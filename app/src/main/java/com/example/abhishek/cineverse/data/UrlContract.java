@@ -9,6 +9,7 @@ public final class UrlContract {
 
     public static final int POPULAR = 0;
     public static final int TOP_RATED = 1;
+    public static final int FAVOURITES = 2;
 
     // Image base urls
     public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";

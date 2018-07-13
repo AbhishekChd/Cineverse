@@ -100,6 +100,10 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
      * @param choice Selected option for sort
      */
     private void showDataOrError(int choice) {
+
+        if (choice == UrlContract.FAVOURITES) {
+            movieViewModel.fetchMoviesByFilter(choice);
+        }
         if (!isConnected()) {
             noInternetSnack =
                     Snackbar.make(findViewById(R.id.coordinator), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
@@ -182,6 +186,9 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
             case 1:
                 showDataOrError(UrlContract.TOP_RATED);
                 break;
+            case 2:
+                showDataOrError(UrlContract.FAVOURITES);
+                break;
             default:
                 showDataOrError(UrlContract.POPULAR);
                 break;
@@ -201,9 +208,6 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
             case R.id.action_filter:
                 // Start sort dialog
                 sortDialog.show(getSupportFragmentManager(), sortDialogFragmentTag);
-                return true;
-            case android.R.id.home:
-                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

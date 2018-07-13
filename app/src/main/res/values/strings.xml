@@ -9,6 +9,7 @@
     <string name="sort_by">Sort By</string>
     <string name="sort_by_popularity">Popularity</string>
     <string name="sort_by_rating">Rating</string>
+    <string name="sort_by_favourites">Favourites</string>
 
     <!-- Transition name-->
     <string name="poster_image_transition">poster_image_transition</string>
