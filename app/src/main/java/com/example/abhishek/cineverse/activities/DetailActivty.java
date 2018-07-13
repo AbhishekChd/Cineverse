@@ -1,20 +1,14 @@
-package com.example.abhishek.cineverse.fragments;
-
+package com.example.abhishek.cineverse.activities;
 
 import android.annotation.TargetApi;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,13 +22,10 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class DetailFragment extends Fragment {
-    private static final String ARG_PARAM = "movie";
+public class DetailActivty extends AppCompatActivity {
+
+    public static final String ARG_PARAM = "movie";
+
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.tv_release_date)
@@ -55,50 +46,16 @@ public class DetailFragment extends Fragment {
     ImageView ivFavMovie;
     private Movie movie;
 
-
-    public DetailFragment() {
-    }
-
-    /**
-     * @param movie Movie Passed to show details
-     * @return A new instance of fragment DetailFragment.
-     */
-    public static DetailFragment newInstance(Movie movie) {
-        DetailFragment fragment = new DetailFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM, movie);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            movie = getArguments().getParcelable(ARG_PARAM);
-        }
+        setContentView(R.layout.activity_detail);
 
-        // For fullscreen effect
-        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ButterKnife.bind(this);
 
-    }
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.activity_detail, container, false);
-        ButterKnife.bind(this, v);
-
-        toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
-        return v;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        movie = getIntent().getParcelableExtra(ARG_PARAM);
 
         setupUiElements(movie);
     }
@@ -136,13 +93,12 @@ public class DetailFragment extends Fragment {
                             .getDrawable(R.drawable.ic_action_select_fav));
         }
 
-
-        Picasso.with(getContext())
+        Picasso.with(this)
                 .load(ImageUrlUtils.getLargePosterUrl(movie.getPosterPath()))
                 .noFade()
                 .into(ivMoviePoster);
 
-        Picasso.with(getContext())
+        Picasso.with(this)
                 .load(ImageUrlUtils.getSmallBackdropUrl(movie.getBackdropPath()))
                 .into(ivBackdrop);
     }
@@ -158,11 +114,5 @@ public class DetailFragment extends Fragment {
             });
             ivMoviePoster.setClipToOutline(true);
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 }
