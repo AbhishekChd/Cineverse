@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.abhishek.cineverse.AppExecutors;
 import com.example.abhishek.cineverse.R;
@@ -123,7 +126,7 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onClick(int index) {
+    public void onClick(int index, View view) {
         List<Movie> movies = movieViewModel
                 .getMoviesLiveData()
                 .getValue();
@@ -131,10 +134,19 @@ public class HomeScreenActivity extends AppCompatActivity implements SortDialogF
         if (movies != null) {
             movie = movies.get(index);
         }
-
         Intent detailIntent = new Intent(this, DetailActivty.class);
         detailIntent.putExtra(DetailActivty.ARG_PARAM, movie);
-        startActivity(detailIntent);
+        detailIntent.putExtra(DetailActivty.IMAGE_TRANSITION_NAME,
+                ViewCompat.getTransitionName(view));
+
+        ActivityOptionsCompat optionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this,
+                        view,
+                        ViewCompat.getTransitionName(view)
+                );
+
+        startActivity(detailIntent, optionsCompat.toBundle());
     }
 
     @Override

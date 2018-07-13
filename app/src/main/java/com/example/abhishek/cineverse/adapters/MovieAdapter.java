@@ -2,6 +2,7 @@ package com.example.abhishek.cineverse.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = movies.get(position);
         holder.tvMovieTitle.setText(movie.getTitle());
         holder.tvRating.setText(Ctx.getString(R.string.rating_format, movie.getVotes()));
+
+        ViewCompat.setTransitionName(holder.ivMoviePoster, String.valueOf(movie.getId()));
+
         if (movie.isFavorite()) {
             holder.ivFavButton.setImageDrawable(
                     Ctx.getResources()
@@ -69,7 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public interface MovieAdapterOnClickHandler {
-        void onClick(int index);
+        void onClick(int index, View view);
 
         void onFavButtonClick(int index);
     }
@@ -96,7 +100,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @Override
         public void onClick(View v) {
-            mClickHandler.onClick(getAdapterPosition());
+            mClickHandler.onClick(getAdapterPosition(), v);
         }
     }
 }

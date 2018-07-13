@@ -19,12 +19,15 @@ import com.example.abhishek.cineverse.helpers.ImageUrlUtils;
 import com.example.abhishek.cineverse.models.Movie;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DetailActivty extends AppCompatActivity {
 
     public static final String ARG_PARAM = "movie";
+    public static final String IMAGE_TRANSITION_NAME = "transition-name";
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -54,10 +57,20 @@ public class DetailActivty extends AppCompatActivity {
         ButterKnife.bind(this);
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
+        // setup poster image transition
+        setPosterImageTransition();
         movie = getIntent().getParcelableExtra(ARG_PARAM);
 
         setupUiElements(movie);
+    }
+
+    private void setPosterImageTransition() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ivMoviePoster.setTransitionName(
+                    Objects.requireNonNull(
+                            getIntent().getExtras()).getString(IMAGE_TRANSITION_NAME)
+            );
+        }
     }
 
     private void setupUiElements(Movie movie) {
@@ -92,6 +105,7 @@ public class DetailActivty extends AppCompatActivity {
                     getResources()
                             .getDrawable(R.drawable.ic_action_select_fav));
         }
+
 
         Picasso.with(this)
                 .load(ImageUrlUtils.getLargePosterUrl(movie.getPosterPath()))
