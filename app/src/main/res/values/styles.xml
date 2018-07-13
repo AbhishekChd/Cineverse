@@ -7,7 +7,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorText</item>
         <item name="android:windowActivityTransitions" tools:targetApi="lollipop">true</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_back</item>
         <item name="android:fontFamily">@font/lato</item>
     </style>
 

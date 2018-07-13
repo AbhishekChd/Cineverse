@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/details_view_margin"
             android:contentDescription="@string/fav_button"
-            android:src="@drawable/ic_action_select_fav"
+            android:src="@drawable/ic_action_is_not_fav"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
@@ -139,7 +139,7 @@
             android:fitsSystemWindows="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
+            app:navigationIcon="@drawable/ic_action_back" />
 
         <View
             android:id="@+id/guideline"

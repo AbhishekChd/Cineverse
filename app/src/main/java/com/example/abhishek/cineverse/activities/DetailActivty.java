@@ -98,12 +98,12 @@ public class DetailActivty extends AppCompatActivity {
         if (movie.isFavorite()) {
             ivFavMovie.setImageDrawable(
                     getResources()
-                            .getDrawable(R.drawable.ic_action_deselect_fav)
+                            .getDrawable(R.drawable.ic_action_is_fav)
             );
         } else {
             ivFavMovie.setImageDrawable(
                     getResources()
-                            .getDrawable(R.drawable.ic_action_select_fav));
+                            .getDrawable(R.drawable.ic_action_is_not_fav));
         }
 
 

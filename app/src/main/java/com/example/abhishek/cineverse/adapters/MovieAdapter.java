@@ -48,12 +48,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         if (movie.isFavorite()) {
             holder.ivFavButton.setImageDrawable(
                     Ctx.getResources()
-                            .getDrawable(R.drawable.ic_action_deselect_fav)
+                            .getDrawable(R.drawable.ic_action_is_fav)
             );
         } else {
             holder.ivFavButton.setImageDrawable(
                     Ctx.getResources()
-                            .getDrawable(R.drawable.ic_action_select_fav));
+                            .getDrawable(R.drawable.ic_action_is_not_fav));
         }
         Picasso.with(Ctx)
                 .load(ImageUrlUtils.getLargePosterUrl(

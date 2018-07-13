@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter"
+        android:icon="@drawable/ic_action_filter"
         android:title="@string/action_sort"
         app:showAsAction="ifRoom" />
 </menu>
