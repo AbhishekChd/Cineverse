@@ -22,7 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/backdrop_w780_thor" />
+            tools:srcCompat="@drawable/backdrop_w780_thor" />
 
         <ImageView
             android:id="@+id/iv_movie_poster"
@@ -33,7 +33,7 @@
             app:layout_constraintDimensionRatio="h,2:3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/guideline"
-            app:srcCompat="@drawable/poster_w185_thor" />
+            tools:srcCompat="@drawable/poster_w185_thor" />
 
 
         <TextView
@@ -121,7 +121,7 @@
             app:layout_constraintStart_toStartOf="@id/tv_release_date" />
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/overview_card"
             layout="@layout/movie_overview_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -131,6 +131,50 @@
             app:layout_constraintStart_toStartOf="@id/iv_movie_poster"
             app:layout_constraintTop_toBottomOf="@id/iv_movie_poster" />
 
+        <TextView
+            android:id="@+id/tv_trailers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/horizontal_separation_margin"
+            android:text="@string/movie_trailers"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/movie_overview_headline"
+            app:layout_constraintStart_toStartOf="@id/overview_card"
+            app:layout_constraintTop_toBottomOf="@id/overview_card" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_view_margin"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_trailers"
+            tools:listitem="@layout/movie_trailer_card" />
+
+        <TextView
+            android:id="@+id/tv_reviews"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/horizontal_separation_margin"
+            android:text="@string/reviews"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/movie_overview_headline"
+            app:layout_constraintStart_toStartOf="@id/overview_card"
+            app:layout_constraintTop_toBottomOf="@id/rv_trailers" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_view_margin"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="@id/overview_card"
+            app:layout_constraintStart_toStartOf="@id/overview_card"
+            app:layout_constraintTop_toBottomOf="@id/tv_reviews"
+            tools:listitem="@layout/movie_review_card" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_detail"
@@ -143,8 +187,8 @@
 
         <View
             android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@id/iv_backdrop"
             app:layout_constraintStart_toStartOf="parent"

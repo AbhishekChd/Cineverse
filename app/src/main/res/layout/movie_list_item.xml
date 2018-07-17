@@ -25,11 +25,11 @@
             android:layout_height="0dp"
             android:contentDescription="@string/poster_image_desc"
             android:scaleType="centerCrop"
-            android:src="@drawable/poster_w185_thor"
             app:layout_constraintDimensionRatio="h,2:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/poster_w185_thor" />
 
         <TextView
             android:id="@+id/tv_movie_title"
@@ -42,19 +42,10 @@
             android:lines="2"
             android:textColor="@android:color/black"
             android:textSize="@dimen/list_item_text"
-            app:layout_constraintEnd_toStartOf="@+id/iv_fav"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/iv_movie_poster"
             app:layout_constraintTop_toBottomOf="@id/iv_movie_poster"
             tools:text="@string/sample_movie_title" />
-
-        <ImageView
-            android:id="@+id/iv_fav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_action_is_not_fav"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_movie_title" />
 
         <TextView
             android:id="@+id/rating_label"
@@ -62,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/list_item_view_margin_small"
             android:text="@string/rating_label"
-            android:textSize="12sp"
+            android:textSize="@dimen/list_item_text"
             app:layout_constraintStart_toStartOf="@+id/tv_movie_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_movie_title" />
 
@@ -72,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/list_item_view_margin"
             android:textColor="@android:color/holo_red_light"
-            android:textSize="12sp"
+            android:textSize="@dimen/list_item_text"
             app:layout_constraintBaseline_toBaselineOf="@+id/rating_label"
             app:layout_constraintStart_toEndOf="@+id/rating_label"
             tools:text="@string/sample_rating" />

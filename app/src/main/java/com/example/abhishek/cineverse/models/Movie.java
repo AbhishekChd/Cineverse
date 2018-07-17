@@ -58,7 +58,12 @@ public class Movie implements Parcelable {
 
     @ColumnInfo(name = "date_added")
     @Expose(serialize = false, deserialize = false)
-    private Date dateAdded;
+    private Date dateAdded = new Date();
+
+    @ColumnInfo(name = "criteria")
+    @Expose(serialize = false, deserialize = false)
+    private String criteria;
+
 
     /**
      * An instance of Movie to store it's details
@@ -143,6 +148,14 @@ public class Movie implements Parcelable {
 
     public void setDateAdded(Date date) {
         this.dateAdded = date;
+    }
+
+    public String getCriteria() {
+        return criteria;
+    }
+
+    public void setCriteria(String criteria) {
+        this.criteria = criteria;
     }
 
     @Override

@@ -2,12 +2,14 @@ package com.example.abhishek.cineverse.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.example.abhishek.cineverse.R;
+import com.example.abhishek.cineverse.data.AppConstants;
 
 import java.util.Objects;
 
@@ -36,6 +38,11 @@ public class SortDialogFragment extends DialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement SortDialogListener");
         }
+        SharedPreferences preferences =
+                context.getSharedPreferences(
+                        getString(R.string.sort_preference),
+                        Context.MODE_PRIVATE);
+        position = preferences.getInt(getString(R.string.sort_by_key), AppConstants.POPULAR);
     }
 
     public interface SortDialogListener {

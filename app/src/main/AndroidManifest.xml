@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.HomeScreenActivity" />
+        <activity android:name=".ui.home.HomeActivity" />
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@style/AppTheme.Transparent">
@@ -24,12 +24,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.DetailActivty"
-            android:parentActivityName=".activities.HomeScreenActivity"
+            android:name=".ui.detail.DetailActivity"
+            android:parentActivityName=".ui.home.HomeActivity"
             android:theme="@style/AppTheme.Transparent">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.HomeScreenActivity" />
+                android:value=".ui.home.HomeActivity" />
         </activity>
     </application>
 

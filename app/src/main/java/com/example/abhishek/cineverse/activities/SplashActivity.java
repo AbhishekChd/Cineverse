@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.abhishek.cineverse.R;
+import com.example.abhishek.cineverse.ui.home.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -16,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Handler handler = new Handler();
         handler.postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, HomeScreenActivity.class);
+            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
         }, 3000);

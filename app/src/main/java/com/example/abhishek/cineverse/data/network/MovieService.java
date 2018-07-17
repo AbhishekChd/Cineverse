@@ -1,4 +1,4 @@
-package com.example.abhishek.cineverse.network;
+package com.example.abhishek.cineverse.data.network;
 
 import android.content.Context;
 
