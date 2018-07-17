@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/details_view_margin">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/user_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/review_user_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_user_initial"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="28dp"
+            app:layout_constraintBottom_toBottomOf="@id/user_background"
+            app:layout_constraintEnd_toEndOf="@id/user_background"
+            app:layout_constraintStart_toStartOf="@id/user_background"
+            app:layout_constraintTop_toTopOf="@id/user_background"
+            tools:text="A" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/vertical_separation_margin"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/title_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/user_background"
+            app:layout_constraintStart_toEndOf="@id/user_background"
+            app:layout_constraintTop_toTopOf="@id/user_background"
+            tools:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tv_review"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vertical_separation_margin"
+            android:textColor="@color/colorText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/user_background"
+            app:layout_constraintTop_toBottomOf="@id/user_background"
+            tools:text="@tools:sample/lorem/random" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

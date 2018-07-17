@@ -2,6 +2,7 @@ package com.example.abhishek.cineverse.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,11 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
+    private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
     private List<Movie> movies;
     private MovieAdapterOnClickHandler mClickHandler;
-    private Context Ctx;
 
-    public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler) {
-        Ctx = context;
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
     }
 
@@ -37,12 +37,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        holder.tvMovieTitle.setText(movies.get(position).getTitle());
-        holder.tvRating.setText(Ctx.getString(R.string.rating_format, movies.get(position).getVotes()));
+        Movie movie = movies.get(position);
+        holder.tvMovieTitle.setText(movie.getTitle());
+        holder.tvRating.setText(
+                holder.tvMovieTitle
+                        .getContext()
+                        .getString(R.string.rating_format, movie.getVotes())
+        );
 
-        Picasso.with(Ctx)
+        ViewCompat.setTransitionName(holder.ivMoviePoster, String.valueOf(movie.getId()));
+
+        Picasso.with(holder.tvMovieTitle.getContext())
                 .load(ImageUrlUtils.getLargePosterUrl(
-                        movies.get(position).getPosterPath()
+                        movie.getPosterPath()
                 ))
                 .into(holder.ivMoviePoster);
     }
@@ -58,7 +65,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public interface MovieAdapterOnClickHandler {
-        void onClick(int index);
+        void onClick(int index, View view);
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -67,7 +74,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         TextView tvMovieTitle;
         TextView tvRating;
 
-        public MovieViewHolder(View itemView) {
+        MovieViewHolder(View itemView) {
             super(itemView);
             ivMoviePoster = itemView.findViewById(R.id.iv_movie_poster);
             tvMovieTitle = itemView.findViewById(R.id.tv_movie_title);
@@ -77,7 +84,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @Override
         public void onClick(View v) {
-            mClickHandler.onClick(getAdapterPosition());
+            mClickHandler.onClick(getAdapterPosition(), v);
         }
     }
 }
