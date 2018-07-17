@@ -51,18 +51,4 @@ public interface MovieDao {
 
     @Query("DELETE FROM favourites WHERE id = :id")
     void deleteFromFavourites(int id);
-
-
-
-
-    @Query("SELECT id FROM movie WHERE isFavorite = 1")
-    int[] getFavoriteMovieIds();
-
-    @Query("SELECT * FROM movie ORDER BY date_added DESC")
-    List<Movie> getFavouriteMovies();
-
-    @Delete
-    void deleteMovie(Movie movie);
-
-
 }

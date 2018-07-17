@@ -6,9 +6,6 @@
 
     <color name="colorText">#37474f</color>
     <color name="colorTextDark">#102027</color>
-    <color name="colorTextLight">#62727b</color>
-
-    <color name="colorTextBlack">#000000</color>
 
     <!-- Color for drawable resources-->
     <color name="backdrop_blur_start">#33000000</color>

@@ -45,9 +45,9 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
     }
 
     class MovieReviewViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName;
-        TextView tvReview;
-        TextView tvUserInitial;
+        final TextView tvName;
+        final TextView tvReview;
+        final TextView tvUserInitial;
 
         MovieReviewViewHolder(View itemView) {
             super(itemView);

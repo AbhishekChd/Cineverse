@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Card and it's components dimensions-->
-    <dimen name="margin_movie_card">8dp</dimen>
     <dimen name="list_item_text">14sp</dimen>
     <dimen name="list_item_view_margin_small">4dp</dimen>
     <dimen name="list_item_view_margin">8dp</dimen>
 
 
     <!-- Divider height or width-->
-    <dimen name="divider_width">1dp</dimen>
 
     <!-- Details layout -->
     <dimen name="ratings_progress_size">42dp</dimen>
@@ -31,4 +29,5 @@
     <!-- Details View Poster -->
     <dimen name="default_poster_radius">2dp</dimen>
     <dimen name="default_poster_elevation">2dp</dimen>
+    <dimen name="user_initial_text_size">28sp</dimen>
 </resources>

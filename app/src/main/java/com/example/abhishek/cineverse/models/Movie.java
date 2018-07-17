@@ -28,30 +28,30 @@ public class Movie implements Parcelable {
         }
     };
     @PrimaryKey
-    private int id;
+    private final int id;
 
-    private String title;
+    private final String title;
 
     @SerializedName("vote_average")
-    private float votes;
+    private final float votes;
 
     @ColumnInfo(name = "original_title")
     @SerializedName("original_title")
-    private String originalTitle;
+    private final String originalTitle;
 
-    private String overview;
+    private final String overview;
 
     @ColumnInfo(name = "release_date")
     @SerializedName("release_date")
-    private String releaseDate;
+    private final String releaseDate;
 
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
-    private String posterPath;
+    private final String posterPath;
 
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
-    private String backdropPath;
+    private final String backdropPath;
 
     @Expose(serialize = false, deserialize = false)
     private boolean isFavorite;

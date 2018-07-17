@@ -15,7 +15,6 @@
         android:paddingTop="@dimen/vertical_separation_margin">
 
         <TextView
-            android:id="@+id/overview_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/overview_label"

@@ -12,7 +12,6 @@
     <string name="sort_by_favourites">Favourites</string>
 
     <!-- Transition name-->
-    <string name="poster_image_transition">poster_image_transition</string>
 
     <string name="rating_format">%.1f</string>
     <string name="rating_label">Ratings</string>
@@ -23,7 +22,6 @@
     <string name="action_sort">Sort</string>
     <string name="content_attribution">content attribution</string>
     <string name="splash_logo_content_desc">splash logo</string>
-    <string name="action_favourites">Favourites</string>
     <string name="fav_button">Favourite Button</string>
     <string name="movie_trailer_thumbnail">movie trailer thumbnail</string>
     <string name="play_button">play button</string>
@@ -34,10 +32,10 @@
 
     <string name="sort_preference">sort_preference</string>
     <string name="sort_by_key">1</string>
-    <string name="share_button">share button</string>
 
     <string name="share_detail_format">
         Movie Title: %s\nRatings: %.2f\nTrailer(s): %s
     </string>
     <string name="action_share">Share</string>
+    <string name="content_background">content background</string>
 </resources>

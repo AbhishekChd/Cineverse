@@ -29,6 +29,7 @@ import com.example.abhishek.cineverse.models.Movie;
 import com.example.abhishek.cineverse.ui.detail.DetailActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -127,7 +128,7 @@ public class HomeActivity extends AppCompatActivity
     private boolean isConnected() {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return connectivityManager.getActiveNetworkInfo() != null
+        return Objects.requireNonNull(connectivityManager).getActiveNetworkInfo() != null
                 && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 

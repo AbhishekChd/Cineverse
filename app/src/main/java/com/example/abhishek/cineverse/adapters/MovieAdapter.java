@@ -1,6 +1,5 @@
 package com.example.abhishek.cineverse.adapters;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +20,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
     private List<Movie> movies;
-    private MovieAdapterOnClickHandler mClickHandler;
+    private final MovieAdapterOnClickHandler mClickHandler;
 
     public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
@@ -70,9 +69,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView ivMoviePoster;
-        TextView tvMovieTitle;
-        TextView tvRating;
+        final ImageView ivMoviePoster;
+        final TextView tvMovieTitle;
+        final TextView tvRating;
 
         MovieViewHolder(View itemView) {
             super(itemView);

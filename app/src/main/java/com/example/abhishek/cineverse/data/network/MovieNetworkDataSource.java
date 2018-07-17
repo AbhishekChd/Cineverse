@@ -3,6 +3,7 @@ package com.example.abhishek.cineverse.data.network;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.abhishek.cineverse.BuildConfig;
@@ -53,8 +54,8 @@ public class MovieNetworkDataSource {
 
         moviesNetworkCall.enqueue(new Callback<MovieJsonContainer>() {
             @Override
-            public void onResponse(Call<MovieJsonContainer> call
-                    , Response<MovieJsonContainer> moviesResponse) {
+            public void onResponse(@NonNull Call<MovieJsonContainer> call
+                    , @NonNull Response<MovieJsonContainer> moviesResponse) {
                 if (moviesResponse.raw().cacheResponse() != null) {
                     Log.d(LOG_TAG, "Response from cache");
                 }
@@ -69,7 +70,7 @@ public class MovieNetworkDataSource {
             }
 
             @Override
-            public void onFailure(Call<MovieJsonContainer> call, Throwable t) {
+            public void onFailure(@NonNull Call<MovieJsonContainer> call, @NonNull Throwable t) {
 
             }
         });
@@ -83,7 +84,7 @@ public class MovieNetworkDataSource {
 
         movieVideosCall.enqueue(new Callback<MovieVideos>() {
             @Override
-            public void onResponse(Call<MovieVideos> call, Response<MovieVideos> response) {
+            public void onResponse(@NonNull Call<MovieVideos> call, @NonNull Response<MovieVideos> response) {
                 MovieVideos movieVideos = response.body();
                 if (movieVideos != null) {
                     mMovieVideos.postValue(movieVideos);
@@ -94,7 +95,7 @@ public class MovieNetworkDataSource {
             }
 
             @Override
-            public void onFailure(Call<MovieVideos> call, Throwable t) {
+            public void onFailure(@NonNull Call<MovieVideos> call, @NonNull Throwable t) {
                 @SuppressLint("DefaultLocale")
                 String errorMessage = String.format(
                         "Could not fetch movie video for id %d due to error %s",
@@ -115,7 +116,7 @@ public class MovieNetworkDataSource {
 
         movieReviewsCall.enqueue(new Callback<MovieReviews>() {
             @Override
-            public void onResponse(Call<MovieReviews> call, Response<MovieReviews> response) {
+            public void onResponse(@NonNull Call<MovieReviews> call, @NonNull Response<MovieReviews> response) {
                 MovieReviews movieReviews = response.body();
                 if (movieReviews != null) {
                     mMovieReviews.postValue(movieReviews);
@@ -126,7 +127,7 @@ public class MovieNetworkDataSource {
             }
 
             @Override
-            public void onFailure(Call<MovieReviews> call, Throwable t) {
+            public void onFailure(@NonNull Call<MovieReviews> call, @NonNull Throwable t) {
                 @SuppressLint("DefaultLocale")
                 String errorMessage = String.format(
                         "Could not fetch movie review for id %d due to error %s",

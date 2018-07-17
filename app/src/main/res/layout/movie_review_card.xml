@@ -12,6 +12,7 @@
         android:padding="8dp">
 
         <ImageView
+            android:contentDescription="@string/content_background"
             android:id="@+id/user_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +26,7 @@
             android:layout_height="0dp"
             android:gravity="center"
             android:textAlignment="center"
-            android:textSize="28dp"
+            android:textSize="@dimen/user_initial_text_size"
             app:layout_constraintBottom_toBottomOf="@id/user_background"
             app:layout_constraintEnd_toEndOf="@id/user_background"
             app:layout_constraintStart_toStartOf="@id/user_background"

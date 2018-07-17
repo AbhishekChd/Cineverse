@@ -63,12 +63,15 @@ public class MovieRepository {
     }
 
     public LiveData<List<Movie>> fetchMovieBy(int sortBy) {
-        if (sortBy == AppConstants.POPULAR) {
-            MovieRepository.criteria = AppConstants.CRITERIA_POPULAR;
-        } else if (sortBy == AppConstants.TOP_RATED) {
-            MovieRepository.criteria = AppConstants.CRITERIA_TOP_RATED;
-        } else {
-            return getFavouriteMovies();
+        switch (sortBy) {
+            case AppConstants.POPULAR:
+                MovieRepository.criteria = AppConstants.CRITERIA_POPULAR;
+                break;
+            case AppConstants.TOP_RATED:
+                MovieRepository.criteria = AppConstants.CRITERIA_TOP_RATED;
+                break;
+            default:
+                return getFavouriteMovies();
         }
         initializeData(MovieRepository.criteria);
         return mLatestDatabaseData;

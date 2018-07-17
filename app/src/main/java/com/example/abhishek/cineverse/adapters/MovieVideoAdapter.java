@@ -39,7 +39,6 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Mo
             if (!videoUrl.isEmpty()) {
                 Picasso.with(holder.ivThumbnail.getContext())
                         .load(videoUrl)
-                        .error(R.drawable.error_trailer)
                         .into(holder.ivThumbnail);
             }
         }
@@ -55,17 +54,15 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Mo
     }
 
     class MovieVideoViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivThumbnail;
-        ImageView ivPlayButton;
+        final ImageView ivThumbnail;
+        final ImageView ivPlayButton;
 
         public MovieVideoViewHolder(View itemView) {
             super(itemView);
             ivThumbnail = itemView.findViewById(R.id.iv_thumbnail);
             ivPlayButton = itemView.findViewById(R.id.iv_play_button);
 
-            ivPlayButton.setOnClickListener(v -> {
-                mOnClickListener.onClick(videos.get(getAdapterPosition()).getVideoUrl());
-            });
+            ivPlayButton.setOnClickListener(v -> mOnClickListener.onClick(videos.get(getAdapterPosition()).getVideoUrl()));
         }
     }
 }
