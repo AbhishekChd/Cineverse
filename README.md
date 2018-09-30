@@ -1,6 +1,6 @@
 # Cineverse
 
-A bit overview, it uses [The Movie Database(TMDb)](https://www.themoviedb.org/) API to get movies data in JSON format, which is parsed using google's gson library and the requests are sent by Volley.
+A bit overview, it uses [The Movie Database(TMDb)](https://www.themoviedb.org/) API to get movies data in JSON format, which is parsed using google's gson library and the requests are sent by Retrofit. It follows a [Repository Pattern](https://developer.android.com/jetpack/docs/guide) to fetch, store and display data.
 
 #### Note: To run the app you have to add [The Movie DB](https://developers.themoviedb.org/3/getting-started/introduction) API key. Getting a key would take just few seconds :)
 **Run the app**
@@ -15,7 +15,7 @@ TheMovieDbApi_Api_Key=<YOUR API KEY>
 
 #### Libraries
 - [Google gson](https://github.com/google/gson) For parsing JSON data
-- [Volley](https://github.com/google/volley) For sending network requests
+- [Retrofit](http://square.github.io/retrofit/) For sending network requests
 - [Picasso](http://square.github.io/picasso/) Loading and caching images
 - [Butterknife](http://jakewharton.github.io/butterknife/) View Binding
 
